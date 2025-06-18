@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors for Term Insurance page */
+.bg-navy-700 {
+  background-color: #1e3a8a;
+}
+
+.bg-navy-800 {
+  background-color: #1e3178;
+}
+
+/* Responsive utility classes */
+@layer utilities {
+  .xs\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Smooth scrolling animation for brand carousel */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Custom Range Input Styling */
+input[type="range"] {
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+/* Default (Emerald) Range Styling */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border: 2px solid #10b981;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border: 2px solid #10b981;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Blue (for Debt) Range Styling */
+.bg-blue-50 input[type="range"]::-webkit-slider-thumb {
+  border-color: #3b82f6;
+}
+
+.bg-blue-50 input[type="range"]::-moz-range-thumb {
+  border-color: #3b82f6;
+}

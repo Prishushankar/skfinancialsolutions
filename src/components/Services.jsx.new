@@ -1,0 +1,109 @@
+import ServiceCard from "./ServiceCard";
+
+const Services = () => {
+  const mainServices = [
+    {
+      title: "Mutual Funds",
+      icon: (
+        <svg 
+          className="w-8 h-8" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M20 12V17C20 18.1046 19.1046 19 18 19H6C4.89543 19 4 18.1046 4 17V12M12 10L12 3M12 3L16 7M12 3L8 7"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </svg>
+      ),
+      description: "Explore our diverse range of mutual fund solutions for your investment needs."
+    },
+    {
+      title: "Insurance",
+      icon: (
+        <svg 
+          className="w-8 h-8" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+            stroke="currentColor" 
+            strokeWidth="1.5" 
+            fill="none" 
+          />
+          <path
+            d="M12 8V12L14.5 14.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+          />
+          <path
+            d="M7 6.5C8.5 5.5 10.2 5 12 5C13.8 5 15.5 5.5 17 6.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            fill="none"
+          />
+        </svg>
+      ),
+      description: "Protect your future with our comprehensive insurance solutions."
+    },
+    {
+      title: "Loan",
+      icon: (
+        <svg 
+          className="w-8 h-8" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 8L5 12L9 16M15 8L19 12L15 16"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
+        </svg>
+      ),
+      description: "Access funds with competitive interest rates and flexible repayment options."
+    },
+  ];
+  
+  return (
+    <section id="services" className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl px-4 mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Services</h2>
+          <p className="text-gray-600 max-w-3xl mx-auto">
+            Explore our comprehensive range of financial services designed to help you achieve your financial goals.
+          </p>
+        </div>
+
+        {/* Main Services - Three cards with navigation */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {mainServices.map((service, index) => (
+            <ServiceCard
+              key={`service-${index}`}
+              title={service.title}
+              icon={service.icon}
+              description={service.description}
+              category={service.title.toLowerCase()}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Services;
