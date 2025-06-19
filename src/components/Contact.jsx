@@ -714,9 +714,15 @@ const Contact = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-            <p className="text-text-secondary">Google Map would be embedded here</p>
-          </div>
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.0023362684497!2d85.06990667485074!3d25.604838615070097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57b7ccb91ac3%3A0x8ea51cae7154dddd!2sJagdeo%20Path%2C%20Patna%2C%20Bihar!5e0!3m2!1sen!2sin!4v1750302056661!5m2!1sen!2sin" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen="" 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </motion.div>
       </div>
     </div>

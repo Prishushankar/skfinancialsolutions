@@ -26,23 +26,28 @@ const Navbar = () => {
     { name: "Insurance", href: "/insurance" },
     { name: "Loans", href: "/loans" },
     { name: "About Us", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    
   ];
   return (
     <header 
       className={`bg-white shadow-sm sticky top-0 z-50 font-poppins border-b border-gray-100 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}
-    >      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    >        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
-          {/* Left Section: Logo and Navigation */}
-          <div className="flex items-center space-x-12">
-            {" "}            {/* Logo */}            <div className="flex items-center">              <img
+          {/* Left Section: Logo */}
+          <div className="flex-shrink-0">
+            {/* Logo */}
+            <div className="flex items-center">
+              <img
                 src="/crop1.jpg"
                 alt="SkFinancial"
                 className="h-16 w-auto"
               />
-            </div>{/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
+            </div>
+          </div>
+          
+          {/* Center Section: Navigation */}
+          <div className="hidden md:flex flex-grow justify-center">
+            <nav className="flex space-x-8">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
@@ -53,8 +58,10 @@ const Navbar = () => {
                 </Link>
               ))}
             </nav>
-          </div>{" "}          {/* Right Section: CTA Button */}
-          <div className="hidden md:block ml-auto">
+          </div>
+          
+          {/* Right Section: CTA Button */}
+          <div className="hidden md:block flex-shrink-0">
             <Link to="/contact">
               <button className="bg-primary text-white hover:bg-primary-dark px-6 py-2 text-sm font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm hover:shadow-md">
                 Get in touch

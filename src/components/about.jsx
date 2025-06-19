@@ -1,5 +1,6 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const About = () => {
   // Team members data - centered in the UI
@@ -329,23 +330,25 @@ const About = () => {
             Want to join our team of visionaries?
           </motion.p>
           
-          <motion.button
-            className="bg-primary text-white hover:bg-primary/90 px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden relative"
-            whileHover={{
-              scale: 1.05,
-              boxShadow:
-                "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-            }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <motion.span
-              className="absolute inset-0 bg-white/20"
-              initial={{ x: "-100%" }}
-              whileHover={{ x: "100%" }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
-            View Open Positions
-          </motion.button>
+          <Link to="/contact" onClick={() => window.scrollTo(0, 0)}>
+            <motion.button
+              className="bg-primary text-white hover:bg-primary/90 px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden relative"
+              whileHover={{
+                scale: 1.05,
+                boxShadow:
+                  "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <motion.span
+                className="absolute inset-0 bg-white/20"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: "100%" }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+              />
+              View Open Positions
+            </motion.button>
+          </Link>
           
         </motion.div>
       

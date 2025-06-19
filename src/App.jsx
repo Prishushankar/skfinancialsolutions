@@ -14,6 +14,7 @@ import InsurancePage from "./components/InsurancePage";
 import LoanPage from "./components/LoanPage";
 import About from "./components/about";
 import Contact from "./components/Contact";
+import ScrollToTop from "./components/ScrollToTop";
 
 const HomePage = () => {
   return (
@@ -33,6 +34,7 @@ const HomePage = () => {
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <div className="">
         <Navbar />
         <Routes>

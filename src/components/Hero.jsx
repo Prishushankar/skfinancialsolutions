@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const heroRef = useRef(null);
@@ -218,26 +219,28 @@ const Hero = () => {
             We&apos;re a dedicated financial solutions firm that blends strategy,
             technology, and expertise to grow wealth and optimize financial
             performance.
-          </p>
-
-          {/* CTA */}
+          </p>          {/* CTA */}
           <div className="mt-8">
-            <button className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow font-semibold transition">
-              Schedule Your Financial Growth
-              <svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </button>
+          
+            <Link to="/contact">
+              <button className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow font-semibold transition">
+                Schedule Your Financial Growth
+                <svg
+                  className="ml-2 w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </Link>
+        
           </div>
         </div>
       </motion.section>

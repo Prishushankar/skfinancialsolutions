@@ -1,11 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CaseStudies = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(3);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Adjust items per view based on screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setItemsPerView(1);
+        setIsMobile(true);
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2);
+        setIsMobile(false);
+      } else {
+        setItemsPerView(3);
+        setIsMobile(false);
+      }
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   const caseStudies = [
     {
       id: 1,
-      companyName: "Mr.Priyanka",
+      companyName: "Mrs.Priyanka",
       subtitle: "Bussiness Owner",
       logo: "",
       insight: "Thanks to their advice, I diversified my investments and saw consistent growth even during uncertain market conditions. A truly client-focused firm!",
@@ -26,11 +54,10 @@ const CaseStudies = () => {
       companyName: "Mr.Rakesh",
       subtitle: "Engineer",
       logo: "",
-      insight: "Transparent, reliable, and always available for guidance. Their team helped me secure insurance plans that perfectly fit my family’s needs",
+      insight: "Transparent, reliable, and always available for guidance. Their team helped me secure insurance plans that perfectly fit my family's needs",
       result: "Client since 2010",
       backgroundColor: "bg-orange-100",
     },
-    
     {
       id: 10,
       companyName: "Trusted by 1000+ People",
@@ -41,8 +68,7 @@ const CaseStudies = () => {
       isSpecial: true,
     },
   ];
-
-  const itemsPerView = 3;
+  
   const maxIndex = Math.max(0, caseStudies.length - itemsPerView);
 
   const nextSlide = () => {
@@ -53,19 +79,15 @@ const CaseStudies = () => {
     setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
-  const goToSlide = (index) => {
-    setCurrentIndex(Math.min(index, maxIndex));
-  };
-
   return (
-    <section className="bg-gray-50 pt-20 px-4 sm:px-6 lg:px-20">
+    <section className="bg-gray-50 pt-12 sm:pt-16 md:pt-20 px-4 sm:px-6 lg:px-20">
       <div className="mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-primary text-md font-medium uppercase tracking-wider mb-4 font-poppins">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <p className="text-primary text-sm sm:text-md font-medium uppercase tracking-wider mb-2 sm:mb-4 font-poppins">
             CASE STUDIES
           </p>
-          <h2 className="text-3xl sm:text-5xl font-bold text-text-primary font-poppins">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary font-poppins">
             Reviews from Our Clients
           </h2>
         </div>
@@ -76,10 +98,11 @@ const CaseStudies = () => {
           <button
             onClick={prevSlide}
             disabled={currentIndex === 0}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-4 z-10 w-8 h-8 sm:w-10 md:w-12 sm:h-10 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+            aria-label="Previous slide"
           >
             <svg
-              className="w-6 h-6 text-gray-600"
+              className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -95,10 +118,11 @@ const CaseStudies = () => {
           <button
             onClick={nextSlide}
             disabled={currentIndex === maxIndex}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-4 z-10 w-8 h-8 sm:w-10 md:w-12 sm:h-10 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
+            aria-label="Next slide"
           >
             <svg
-              className="w-6 h-6 text-gray-600"
+              className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -110,29 +134,32 @@ const CaseStudies = () => {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-          </button>{" "}
+          </button>
+          
           {/* Carousel Track */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden pb-8 sm:pb-12">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
-                transform: `translateX(-${
-                  currentIndex * (100 / itemsPerView)
-                }%)`,
+                transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
               }}
             >
-              {" "}
               {caseStudies.map((study) => (
-                <div key={study.id} className="w-1/3 flex-shrink-0 px-4 mb-20">
+                <div 
+                  key={study.id} 
+                  className={`${
+                    isMobile ? 'w-full' : 
+                    itemsPerView === 2 ? 'w-1/2' : 'w-1/3'
+                  } flex-shrink-0 px-2 sm:px-3 md:px-4 mb-6 sm:mb-10 md:mb-20`}
+                >
                   <div
                     className={`bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full ${
                       study.isSpecial ? "border-2 border-primary" : ""
                     }`}
                   >
-                    {" "}
                     {/* Image Section */}
                     <div
-                      className={`${study.backgroundColor}  h-48 flex items-center justify-center relative`}
+                      className={`${study.backgroundColor} h-36 sm:h-48 flex items-center justify-center relative`}
                     >
                       <div className="w-full h-full bg-white rounded-lg shadow-md overflow-hidden">
                         <img
@@ -142,11 +169,12 @@ const CaseStudies = () => {
                         />
                       </div>
                     </div>
+                    
                     {/* Content Section */}
-                    <div className="p-6">
+                    <div className="p-4 sm:p-6">
                       {/* Company Info */}
-                      <div className="mb-4">
-                        <h3 className="text-primary text-lg font-bold font-poppins">
+                      <div className="mb-3 sm:mb-4">
+                        <h3 className="text-primary text-base sm:text-lg font-bold font-poppins">
                           {study.companyName}
                         </h3>
                         {study.subtitle && (
@@ -157,14 +185,14 @@ const CaseStudies = () => {
                       </div>
 
                       {/* Insight */}
-                      <p className="text-text-secondary text-sm leading-relaxed mb-4 font-poppins">
+                      <p className="text-text-secondary text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 font-poppins">
                         {study.insight}
                       </p>
 
                       {/* Result */}
-                      <div className="mb-6">
-                        <div className="bg-primary/10 rounded-lg p-4">
-                          <p className="text-primary font-semibold text-sm font-poppins">
+                      <div className="mb-4 sm:mb-6">
+                        <div className="bg-primary/10 rounded-lg p-3 sm:p-4">
+                          <p className="text-primary font-semibold text-xs sm:text-sm font-poppins">
                             {study.result}
                           </p>
                         </div>
@@ -172,10 +200,10 @@ const CaseStudies = () => {
                       
                       {/* CTA Button */}
                       {!study.isSpecial ? (
-                        <button className="w-full border-2 border-primary text-primary font-semibold py-3 px-6 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 flex items-center justify-center gap-2 font-poppins">
+                        <button className="w-full border-2 border-primary text-primary font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-poppins">
                           View Case Study
                           <svg
-                            className="w-4 h-4"
+                            className="w-3 h-3 sm:w-4 sm:h-4"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -188,14 +216,11 @@ const CaseStudies = () => {
                             />
                           </svg>
                         </button>
-                      ) : 
-                      
-                      (
-                         
-                        <button className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/80 transition-colors duration-300 flex items-center justify-center gap-2 font-poppins">
+                      ) : (
+                        <button className="w-full bg-primary text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg hover:bg-primary/80 transition-colors duration-300 flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-poppins">
                           Get Started
                           <svg
-                            className="w-4 h-4"
+                            className="w-3 h-3 sm:w-4 sm:h-4"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -214,7 +239,21 @@ const CaseStudies = () => {
                 </div>
               ))}
             </div>
-          </div>{" "}
+          </div>
+          
+          {/* Mobile Pagination Dots */}
+          <div className="flex justify-center space-x-2 mt-2 sm:mt-4 md:hidden">
+            {[...Array(caseStudies.length - itemsPerView + 1)].map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                className={`w-2 h-2 rounded-full ${
+                  currentIndex === i ? "bg-primary" : "bg-gray-300"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

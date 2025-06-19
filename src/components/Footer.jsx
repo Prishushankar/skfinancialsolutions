@@ -1,31 +1,42 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleContactClick = (event) => {
+    event.preventDefault();
+    navigate('/contact');
+    window.scrollTo(0, 0);
+  };
   return (
     <footer className="bg-primary text-white py-20 px-4 sm:px-6 lg:px-20">
       <div className="mx-auto">
         {/* Main Footer Content */}
-        <div className="mb-10">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight font-poppins">
+        <div className="mb-10">          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 leading-tight font-poppins">
             Secure Your Financial Future with SK Financial Solutions
-          </h1>
-           
-          <button className="bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center gap-2 font-poppins">
-            Let's Talk
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </button>
+          </h1>          <Link 
+            to="/contact" 
+            className="inline-block bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300 font-poppins"
+            onClick={handleContactClick}
+          >
+            <span className="flex items-center gap-2">
+              Let&apos;s Talk
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </span>
+          </Link>
           
         </div>
         <hr className="mb-8 border-white/20" />
@@ -35,31 +46,32 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-6 font-poppins">
               FINANCIAL SERVICES
-            </h3>
-            <ul className="space-y-4">
-              <li>
-                <a
-                  href="/mutual-funds"
+            </h3>            <ul className="space-y-4">              <li>
+                <Link
+                  to="/mutual-funds"
                   className="text-white/80 hover:text-white transition-colors font-poppins"
+                  onClick={() => window.scrollTo(0, 0)}
                 >
                   Mutual Funds
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/insurance"
+                <Link
+                  to="/insurance"
                   className="text-white/80 hover:text-white transition-colors font-poppins"
+                  onClick={() => window.scrollTo(0, 0)}
                 >
                   Insurance Products
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="/loans"
+                <Link
+                  to="/loans"
                   className="text-white/80 hover:text-white transition-colors font-poppins"
+                  onClick={() => window.scrollTo(0, 0)}
                 >
                   Loan Services
-                </a>
+                </Link>
               </li>
               <li>
                 <a
@@ -219,12 +231,24 @@ const Footer = () => {
               </div>
             </div>
           </div>
-        </div>
-        {/* Bottom Copyright */}
+        </div>        {/* Bottom Copyright */}
         <div className="border-t border-white/20 pt-8">
-          <p className="text-white/60 text-sm font-poppins">
-            © {new Date().getFullYear()} SK Financial Solutions. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-white/60 text-sm font-poppins">
+              © {new Date().getFullYear()} SK Financial Solutions. All rights reserved.
+            </p>
+            <p className="text-white/60 text-sm font-poppins mt-2 sm:mt-0">
+              Developed by{" "}
+              <a 
+                href="https://www.linkedin.com/in/priyanshu-shankar-067831256/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors duration-300 underline"
+              >
+                Priyanshu Shankar
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

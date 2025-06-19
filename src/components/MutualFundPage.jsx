@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ServiceCard from "./ServiceCard";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -309,7 +309,8 @@ const MutualFundPage = () => {
         duration: 0.3
       }
     }
-  };  return (
+  };  
+  return (
     <div className="overflow-hidden">
       {/* SIP Calculator Modal */}
       {showSIPCalculator && (
@@ -736,9 +737,12 @@ const MutualFundPage = () => {
             viewport={{ once: true }}
           >
             <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 text-blue-900">Ready to Start Your Investment Journey?</h3>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+            <Link
+              to="/contact"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-1"
+            >
               Schedule a Consultation
-            </button>
+            </Link>
             <p className="mt-3 text-sm text-gray-600">Our financial experts are ready to guide you</p>
           </motion.div>
         </motion.div>

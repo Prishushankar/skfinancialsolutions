@@ -30,16 +30,17 @@ const SIPCalculator = ({ onClose }) => {
   // Format numbers with commas (Indian format)
   const formatNumber = (num) => {
     return new Intl.NumberFormat('en-IN').format(num);
-  };  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-1 sm:p-2 overflow-y-auto">
-      <div className="bg-white rounded-xl shadow-2xl max-w-7xl w-[95%] md:w-full h-auto overflow-y-auto">
+  };  
+    return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-50 p-1 sm:p-2 overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl max-w-7xl w-[95%] md:w-full my-4 sm:my-2 max-h-[95vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-primary p-5 rounded-t-xl relative">
+        <div className="bg-primary p-4 sm:p-5 rounded-t-xl relative">
           <button 
             onClick={onClose}
-            className="absolute right-6 top-6 text-white hover:text-indigo-100"
+            className="absolute right-4 sm:right-6 top-4 sm:top-6 text-white hover:text-indigo-100"
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -48,18 +49,18 @@ const SIPCalculator = ({ onClose }) => {
             Calculate returns on your Systematic Investment Plan (SIP)
           </p>
         </div>
-        
-        {/* Calculator Form */}
-        <div className="p-5 md:p-6">          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+          {/* Calculator Form */}        <div className="p-2 sm:p-3 md:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
             <div className="space-y-3 sm:space-y-5">
               {/* Monthly SIP */}
-              <div>                <div className="flex justify-between items-center mb-2">
-                  <label className="text-gray-700 text-sm sm:text-base font-medium">Monthly SIP amount</label>
-                  <div className="bg-indigo-50 px-3 sm:px-4 py-1 sm:py-1.5 rounded-md flex items-center text-sm sm:text-base">
+              <div>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                  <label className="text-gray-700 text-sm sm:text-base font-medium mb-1 sm:mb-0">Monthly SIP amount</label>
+                  <div className="bg-indigo-50 px-3 sm:px-4 py-1 sm:py-1.5 rounded-md flex items-center text-sm sm:text-base w-full sm:w-auto">
                     <span className="text-gray-500 mr-1">₹</span>
                     <input
                       type="number"
-                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-24 text-right"
+                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-full sm:w-24 text-right"
                       value={monthlySIP}
                       onChange={(e) => setMonthlySIP(Math.max(100, Number(e.target.value)))}
                     />
@@ -94,12 +95,12 @@ const SIPCalculator = ({ onClose }) => {
               
               {/* Expected Return Rate */}
               <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-gray-700 font-medium">Expected return rate (p.a)</label>
-                  <div className="bg-indigo-50 px-4 py-1.5 rounded-md flex items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                  <label className="text-gray-700 text-sm sm:text-base font-medium mb-1 sm:mb-0">Expected return rate (p.a)</label>
+                  <div className="bg-indigo-50 px-3 sm:px-4 py-1 sm:py-1.5 rounded-md flex items-center w-full sm:w-auto">
                     <input
                       type="number"
-                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-16 text-right"
+                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-full sm:w-16 text-right"
                       value={returnRate}
                       onChange={(e) => setReturnRate(Number(e.target.value))}
                       min="1"
@@ -138,12 +139,12 @@ const SIPCalculator = ({ onClose }) => {
               
               {/* Time Period */}
               <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-gray-700 font-medium">Investment period</label>
-                  <div className="bg-indigo-50 px-4 py-1.5 rounded-md flex items-center">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                  <label className="text-gray-700 text-sm sm:text-base font-medium mb-1 sm:mb-0">Investment period</label>
+                  <div className="bg-indigo-50 px-3 sm:px-4 py-1 sm:py-1.5 rounded-md flex items-center w-full sm:w-auto">
                     <input
                       type="number"
-                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-16 text-right"
+                      className="bg-transparent border-none focus:outline-none text-indigo-700 font-medium w-full sm:w-16 text-right"
                       value={timePeriod}
                       onChange={(e) => setTimePeriod(Number(e.target.value))}
                       min="1"
@@ -177,91 +178,92 @@ const SIPCalculator = ({ onClose }) => {
                   <span>40 yrs</span>
                 </div>
               </div>
-              
-              {/* Results Summary */}              <div className="pt-3 sm:pt-4">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">                  <div className="flex flex-col">
-                    <span className="text-gray-500 text-xs sm:text-sm">Investment</span>
-                    <span className="text-gray-900 font-semibold text-base sm:text-xl">₹{formatNumber(investedAmount)}</span>
+                {/* Results Summary */}
+              <div className="pt-3 sm:pt-4">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-gray-500 text-[10px] sm:text-xs md:text-sm">Investment</span>
+                    <span className="text-gray-900 font-semibold text-xs sm:text-sm md:text-base lg:text-xl">₹{formatNumber(investedAmount)}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-gray-500 text-sm">Est. returns</span>
-                    <span className="text-indigo-600 font-semibold text-xl">₹{formatNumber(estimatedReturns)}</span>
+                    <span className="text-gray-500 text-[10px] sm:text-xs md:text-sm">Est. returns</span>
+                    <span className="text-indigo-600 font-semibold text-xs sm:text-sm md:text-base lg:text-xl">₹{formatNumber(estimatedReturns)}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-gray-500 text-sm">Total value</span>
-                    <span className="text-gray-900 font-semibold text-xl">₹{formatNumber(totalValue)}</span>
+                    <span className="text-gray-500 text-[10px] sm:text-xs md:text-sm">Total value</span>
+                    <span className="text-gray-900 font-semibold text-xs sm:text-sm md:text-base lg:text-xl">₹{formatNumber(totalValue)}</span>
                   </div>
                 </div>
               </div>
             </div>
-            
-            {/* Right Side - Chart */}            <div className="flex items-center justify-center mt-4 md:mt-0">
-              <div className="relative h-56 w-56 sm:h-64 sm:w-64 md:h-72 md:w-72">
-                {/* Donut chart using SVG for better accuracy */}
-                <svg className="w-full h-full" viewBox="0 0 100 100">
-                  {/* Background circle (invested amount) */}
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="none"
-                    stroke="#f3f4f6"
-                    strokeWidth="20"
-                  />
-                  
-                  {/* Returns arc */}
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="40"
-                    fill="none"
-                    stroke="#6366f1"
-                    strokeWidth="20"
-                    strokeDasharray={`${(estimatedReturns / totalValue) * 251.2} 251.2`}
-                    strokeDashoffset="0"
-                    transform="rotate(-90 50 50)"
-                  />
-                  
-                  {/* Inner white circle for donut hole */}
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="30"
-                    fill="white"
-                  />
-                </svg>
-                
-                {/* Legend */}                <div className="absolute top-full mt-2 sm:mt-4 w-full flex justify-center">
-                  <div className="flex space-x-4 sm:space-x-8">
-                    <div className="flex items-center">
-                      <div className="h-3 w-3 rounded-full bg-gray-100 mr-2"></div>
-                      <span className="text-sm text-gray-600">Invested amount</span>
+              {/* Right Side - Chart */}
+            <div className="flex items-center justify-center mt-4 lg:mt-0">              <div className="flex flex-col items-center">
+                <div className="h-36 w-36 sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-72 lg:w-72 relative">
+                  {/* Donut chart using SVG for better accuracy */}
+                  <svg className="w-full h-full" viewBox="0 0 100 100">
+                    {/* Background circle (invested amount) */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#f3f4f6"
+                      strokeWidth="20"
+                    />
+                    
+                    {/* Returns arc */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="40"
+                      fill="none"
+                      stroke="#6366f1"
+                      strokeWidth="20"
+                      strokeDasharray={`${(estimatedReturns / totalValue) * 251.2} 251.2`}
+                      strokeDashoffset="0"
+                      transform="rotate(-90 50 50)"
+                    />
+                    
+                    {/* Inner white circle for donut hole */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="30"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+                  {/* Legend - moved outside of the chart container with proper spacing */}
+                <div className="mt-3 sm:mt-4 w-full">
+                  <div className="flex flex-row justify-center space-x-4 md:space-x-8">
+                    <div className="flex items-center justify-center">
+                      <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-gray-100 mr-1 sm:mr-2"></div>
+                      <span className="text-xs sm:text-sm text-gray-600">Invested amount</span>
                     </div>
-                    <div className="flex items-center">
-                      <div className="h-3 w-3 rounded-full bg-indigo-500 mr-2"></div>
-                      <span className="text-sm text-gray-600">Est. returns</span>
+                    <div className="flex items-center justify-center">
+                      <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-indigo-500 mr-1 sm:mr-2"></div>
+                      <span className="text-xs sm:text-sm text-gray-600">Est. returns</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          
-          {/* Additional information */}
-          <div className="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+          </div>          {/* Additional information */}
+          <div className="mt-8 sm:mt-6 bg-blue-50 p-3 sm:p-4 rounded-lg border border-blue-100">
             <div className="flex items-start">
-              <div className="text-blue-500 mr-3 mt-0.5">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <div className="text-blue-500 mr-2 sm:mr-3 mt-0.5 flex-shrink-0">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
-              <p className="text-sm text-blue-700">
+              <p className="text-xs sm:text-sm text-blue-700">
                 SIP (Systematic Investment Plan) allows you to invest a fixed amount at regular intervals. The power of compounding and rupee cost averaging can help build substantial wealth over time.
               </p>
             </div>
           </div>
           
-          {/* Action buttons */}          <div className="flex justify-end gap-2 sm:gap-3 mt-4 sm:mt-5">
+          {/* Action buttons */}
+          <div className="flex justify-end gap-2 sm:gap-3 mt-4 sm:mt-5">
             <button
               type="button"
               onClick={onClose}

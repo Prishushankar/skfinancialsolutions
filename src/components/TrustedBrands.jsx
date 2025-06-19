@@ -79,7 +79,7 @@ const TrustedBrands = () => {  const brands = [
             India&apos;s Top Financial Institutions
           </h2>
           <p className="text-lg text-text-secondary max-w-3xl mx-auto leading-relaxed font-poppins">
-            We&apos;ve partnered with India&apos;s premier financial institutions to bring you the best mutual fund and insurance products. Our partnerships with leading banks, mutual fund houses, and insurance providers ensure you have access to the widest range of trusted financial solutions tailored to your needs.
+            We&apos;ve partnered with India&apos;s premier financial institutions to bring you the best mutual fund and insurance products.
           </p>
         </div>{" "}        {/* Carousel */}
         <div className="relative overflow-hidden">
