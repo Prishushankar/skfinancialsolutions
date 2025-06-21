@@ -333,7 +333,7 @@ const LoanPage = () => {
               Our financial experts can help you choose the perfect loan solution for your specific needs.
             </motion.p>
           </motion.div>          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
             variants={cardContainerVariants}
             initial="hidden"
             whileInView="visible"

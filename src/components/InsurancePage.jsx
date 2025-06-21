@@ -638,38 +638,38 @@ const InsurancePage = () => {
               className="text-gray-600"
               variants={itemVariants}
             >
-              Protect your family, assets, and future with our comprehensive range of insurance solutions.
-              Our expert advisors can help you find the right coverage for your unique needs.
+              Protect yourself and your loved ones with our comprehensive range of insurance products.
+              Our financial experts can help you choose the perfect insurance solution for your specific needs.
             </motion.p>
-          </motion.div><motion.div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
-            variants={cardContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-          >
-            {insuranceServices.map((service, index) => (
-              <motion.div
-                key={`insurance-${index}`}
-                variants={cardVariants}
-                whileHover={{
-                  y: -10,
-                  transition: {
-                    duration: 0.3,
-                    ease: "easeOut"
-                  }
-                }}
-              >
-                <ServiceCard
-                  title={service.title}
-                  icon={service.icon}
-                  description="Get personalized coverage options tailored to your specific needs."
-                  hideNavigation
-                  className="cursor-pointer border-blue-300 hover:border-blue-500"
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          </motion.div>        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+          variants={cardContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
+          {insuranceServices.map((service, index) => (
+            <motion.div
+              key={`insurance-${index}`}
+              variants={cardVariants}
+              whileHover={{
+                y: -10,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut"
+                }
+              }}
+            >
+              <ServiceCard
+                title={service.title}
+                icon={service.icon}
+                description="Get personalized coverage options tailored to your specific needs."
+                hideNavigation
+                className="cursor-pointer border-blue-300 hover:border-blue-500"
+              />
+            </motion.div>
+          ))}
+        </motion.div>
             <motion.div 
             className="max-w-3xl mx-auto mt-16 p-6 bg-white rounded-xl shadow-md border-t-4 border-blue-600"
             initial={{ opacity: 0, y: 30 }}

@@ -436,11 +436,11 @@ const MutualFundPage = () => {
               Watch Your Investments <span className="text-green-600">Grow</span> Over Time
             </h2>
             
-            <div className="relative h-64 sm:h-80 md:h-96 bg-white rounded-lg shadow-lg p-4 border border-gray-100">
+            <div className="relative h-72 sm:h-80 md:h-96 bg-white rounded-lg shadow-lg p-2 sm:p-4 border border-gray-100">
               {/* Graph Container */}
-              <div className="absolute bottom-12 left-0 right-0 top-4 px-4">
+              <div className="absolute bottom-12 left-0 right-0 top-4 px-1 sm:px-4">
                 {/* Y-axis labels */}
-                <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col justify-between text-xs text-gray-500">
+                <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-12 flex flex-col justify-between text-[10px] sm:text-xs text-gray-500">
                   <div>₹50L</div>
                   <div>₹40L</div>
                   <div>₹30L</div>
@@ -450,30 +450,30 @@ const MutualFundPage = () => {
                 </div>
                 
                 {/* X-axis */}
-                <div className="absolute bottom-0 left-16 right-4 h-px bg-gray-300"></div>
+                <div className="absolute bottom-0 left-10 sm:left-16 right-1 sm:right-4 h-px bg-gray-300"></div>
                 
                 {/* X-axis labels */}
-                <div className="absolute bottom-[-20px] left-16 right-4 flex justify-between text-xs text-gray-500">
+                <div className="absolute bottom-[-28px] sm:bottom-[-20px] left-10 sm:left-16 right-1 sm:right-4 flex justify-between text-[10px] sm:text-xs text-gray-500">
                   <div>Start</div>
-                  <div>5 Yrs</div>
-                  <div>10 Yrs</div>
-                  <div>15 Yrs</div>
-                  <div>20 Yrs</div>
-                  <div>25 Yrs</div>
+                  <div>5Y</div>
+                  <div>10Y</div>
+                  <div>15Y</div>
+                  <div>20Y</div>
+                  <div>25Y</div>
                 </div>
                 
                 {/* Horizontal grid lines */}
                 {[0, 1, 2, 3, 4, 5].map((i) => (
                   <div 
                     key={`grid-${i}`} 
-                    className="absolute h-px bg-gray-100 left-16 right-4" 
+                    className="absolute h-px bg-gray-100 left-10 sm:left-16 right-1 sm:right-4" 
                     style={{ bottom: `${i * 20}%` }}
                   ></div>
                 ))}
                 
                 {/* Animated Green Line - SIP Investment Growth */}
                 <motion.svg 
-                  className="absolute left-16 bottom-0 right-4 h-full"
+                  className="absolute left-10 sm:left-16 bottom-0 right-1 sm:right-4 h-full"
                   viewBox="0 0 1000 500" 
                   preserveAspectRatio="none"
                 >
@@ -492,7 +492,7 @@ const MutualFundPage = () => {
                 
                 {/* Animated Blue Line - Lump Sum Investment */}
                 <motion.svg 
-                  className="absolute left-16 bottom-0 right-4 h-full"
+                  className="absolute left-10 sm:left-16 bottom-0 right-1 sm:right-4 h-full"
                   viewBox="0 0 1000 500" 
                   preserveAspectRatio="none"
                 >
@@ -512,7 +512,7 @@ const MutualFundPage = () => {
                 
                 {/* Animated Orange Line - Fixed Deposit */}
                 <motion.svg 
-                  className="absolute left-16 bottom-0 right-4 h-full"
+                  className="absolute left-10 sm:left-16 bottom-0 right-1 sm:right-4 h-full"
                   viewBox="0 0 1000 500" 
                   preserveAspectRatio="none"
                 >
@@ -533,7 +533,7 @@ const MutualFundPage = () => {
                 {[150, 300, 450, 600, 750, 900].map((xPos, i) => (
                   <motion.div
                     key={`marker-${i}`}
-                    className="absolute w-3 h-3 bg-green-500 rounded-full shadow-md flex items-center justify-center"
+                    className="absolute w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-md flex items-center justify-center"
                     style={{ 
                       left: `${(xPos / 900) * 100}%`,
                       bottom: `${[0, 20, 30, 38, 42, 45][i]}%`,
@@ -546,7 +546,7 @@ const MutualFundPage = () => {
                   >
                     {i === 5 && (
                       <motion.div 
-                        className="absolute top-[-40px] left-[-35px] bg-green-600 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap"
+                        className="absolute top-[-35px] left-[-30px] sm:top-[-40px] sm:left-[-35px] bg-green-600 text-white px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-[10px] sm:text-xs font-medium whitespace-nowrap"
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: false, amount: 0.2 }}
@@ -560,18 +560,18 @@ const MutualFundPage = () => {
               </div>
               
               {/* Legend */}
-              <div className="absolute bottom-0 left-16 right-4 flex justify-center space-x-6 text-xs mb-[-24px]">
+              <div className="absolute bottom-0 left-10 sm:left-16 right-1 sm:right-4 flex justify-center space-x-2 sm:space-x-6 text-[10px] sm:text-xs mb-[-28px] sm:mb-[-24px]">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-                  <span>SIP Investment</span>
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full mr-1"></div>
+                  <span>SIP</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-blue-500 rounded-full mr-1"></div>
                   <span>Lump Sum</span>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-orange-500 rounded-full mr-1"></div>
-                  <span>Fixed Deposit</span>
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-orange-500 rounded-full mr-1"></div>
+                  <span>FD</span>
                 </div>
               </div>
             </div>
@@ -601,7 +601,7 @@ const MutualFundPage = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
               <motion.div 
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-12 sm:mb-16"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mb-12 sm:mb-16"
             variants={cardContainerVariants}
             initial="hidden"
             whileInView="visible"
