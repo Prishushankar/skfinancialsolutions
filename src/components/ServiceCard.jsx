@@ -8,7 +8,7 @@ import SIPCalculator from './SIPCalculator';
 import TermInsurancePage from './TermInsurancePage';
 import LifeInsurancePage from './LifeInsurancePage';
 
-const ServiceCard = ({ title, icon, description, category, hideNavigation, className = "", showCalculator }) => {
+const ServiceCard = ({ title, icon, description, category, hideNavigation, className = "", showExplore, showCalculator, showContact = true }) => {
   const navigate = useNavigate();
   const [showRetirementCalculator, setShowRetirementCalculator] = useState(false);
   const [showMutualFundCalculator, setShowMutualFundCalculator] = useState(false);
@@ -46,6 +46,12 @@ const ServiceCard = ({ title, icon, description, category, hideNavigation, class
       setShowLifeInsurancePage(true);
     }
   };
+
+  const handleExploreClick = (e) => {
+    e.stopPropagation();
+    handleClick();
+  };
+
   return (
     <>      <motion.div 
         className={`bg-white/95 backdrop-blur-sm rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-blue-50 cursor-pointer overflow-hidden relative h-64 ${className}`}
@@ -67,20 +73,30 @@ const ServiceCard = ({ title, icon, description, category, hideNavigation, class
             <p className="text-sm text-gray-600 mt-1">{description}</p>
           )}          {/* Call-to-action buttons */}
           <div className="mt-3 sm:mt-4 flex space-x-3 justify-center">
+            {showExplore && (
+              <button 
+                className="px-3 py-1.5 text-xs font-medium text-blue-600 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors duration-200 shadow-sm"
+                onClick={handleExploreClick}
+              >
+                Explore
+              </button>
+            )}
             {showCalculator && (
               <button className="px-3 py-1.5 text-xs font-medium text-blue-600 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors duration-200 shadow-sm">
                 Calculator
               </button>
             )}
-            <button 
-              className="px-3 py-1.5 text-xs font-medium text-green-600 rounded-full border border-green-200 bg-green-50 hover:bg-green-100 transition-colors duration-200 shadow-sm"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent triggering the parent onClick
-                navigate('/contact');
-              }}
-            >
-              Contact
-            </button>
+            {showContact && (
+              <button 
+                className="px-3 py-1.5 text-xs font-medium text-green-600 rounded-full border border-green-200 bg-green-50 hover:bg-green-100 transition-colors duration-200 shadow-sm"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering the parent onClick
+                  navigate('/contact');
+                }}
+              >
+                Contact
+              </button>
+            )}
           </div>
             {/* Subtle financial graph background */}
           <div className="absolute bottom-2 right-2 opacity-10">
@@ -126,7 +142,9 @@ ServiceCard.propTypes = {
   category: PropTypes.string,
   hideNavigation: PropTypes.bool,
   className: PropTypes.string,
-  showCalculator: PropTypes.bool
+  showExplore: PropTypes.bool,
+  showCalculator: PropTypes.bool,
+  showContact: PropTypes.bool,
 };
 
 export default ServiceCard;

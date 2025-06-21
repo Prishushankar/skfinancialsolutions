@@ -247,6 +247,8 @@ const Services = () => {  const mainServices = [
                 icon={service.icon}
                 description={service.description}
                 category={service.title.toLowerCase()}
+                showExplore={true}
+                showContact={false}
               />
             </motion.div>
           ))}
