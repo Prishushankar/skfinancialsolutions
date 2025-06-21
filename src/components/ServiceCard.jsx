@@ -8,7 +8,7 @@ import SIPCalculator from './SIPCalculator';
 import TermInsurancePage from './TermInsurancePage';
 import LifeInsurancePage from './LifeInsurancePage';
 
-const ServiceCard = ({ title, icon, description, category, hideNavigation, className = "" }) => {
+const ServiceCard = ({ title, icon, description, category, hideNavigation, className = "", showCalculator }) => {
   const navigate = useNavigate();
   const [showRetirementCalculator, setShowRetirementCalculator] = useState(false);
   const [showMutualFundCalculator, setShowMutualFundCalculator] = useState(false);
@@ -67,9 +67,11 @@ const ServiceCard = ({ title, icon, description, category, hideNavigation, class
             <p className="text-sm text-gray-600 mt-1">{description}</p>
           )}          {/* Call-to-action buttons */}
           <div className="mt-3 sm:mt-4 flex space-x-3 justify-center">
-            <button className="px-3 py-1.5 text-xs font-medium text-blue-600 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors duration-200 shadow-sm">
-              Explore
-            </button>
+            {showCalculator && (
+              <button className="px-3 py-1.5 text-xs font-medium text-blue-600 rounded-full border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors duration-200 shadow-sm">
+                Calculator
+              </button>
+            )}
             <button 
               className="px-3 py-1.5 text-xs font-medium text-green-600 rounded-full border border-green-200 bg-green-50 hover:bg-green-100 transition-colors duration-200 shadow-sm"
               onClick={(e) => {
@@ -123,7 +125,8 @@ ServiceCard.propTypes = {
   description: PropTypes.string,
   category: PropTypes.string,
   hideNavigation: PropTypes.bool,
-  className: PropTypes.string
+  className: PropTypes.string,
+  showCalculator: PropTypes.bool
 };
 
 export default ServiceCard;

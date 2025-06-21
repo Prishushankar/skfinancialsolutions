@@ -652,6 +652,7 @@ const MutualFundPage = () => {
                   icon={service.icon}
                   description={service.description || "Get expert guidance on selecting the right mutual funds for your investment goals."}
                   hideNavigation
+                  showCalculator={true}
                   className={(service.special || service.title !== "SIP Investments") ? "cursor-pointer border-blue-300 hover:border-blue-500" : ""}
                 />
               </motion.div>
