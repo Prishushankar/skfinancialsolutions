@@ -35,7 +35,7 @@ const CaseStudies = () => {
       id: 1,
       companyName: "Mrs.Priyanka",
       subtitle: "Bussiness Owner",
-      logo: "",
+      logo: "/female.jpg",
       insight: "Thanks to their advice, I diversified my investments and saw consistent growth even during uncertain market conditions. A truly client-focused firm!",
       result: "Client since 2009",
       backgroundColor: "bg-orange-100",
@@ -44,7 +44,7 @@ const CaseStudies = () => {
       id: 2,
       companyName: "Mrs.Swapna",
       subtitle: "Doctor",
-      logo: "",
+      logo: "/female.jpg",
       insight: "I've been a client since 2005, and the level of personal attention and financial insight I've received is unmatched.",
       result: "Client since 2005",
       backgroundColor: "bg-green-100",
@@ -53,7 +53,7 @@ const CaseStudies = () => {
       id: 3,
       companyName: "Mr.Rakesh",
       subtitle: "Engineer",
-      logo: "",
+      logo: "/male.png",
       insight: "Transparent, reliable, and always available for guidance. Their team helped me secure insurance plans that perfectly fit my family's needs",
       result: "Client since 2010",
       backgroundColor: "bg-orange-100",
@@ -161,13 +161,19 @@ const CaseStudies = () => {
                     <div
                       className={`${study.backgroundColor} h-36 sm:h-48 flex items-center justify-center relative`}
                     >
-                      <div className="w-full h-full bg-white rounded-lg shadow-md overflow-hidden">
+                      {study.isSpecial ? (
                         <img
                           src={study.logo}
                           alt={study.companyName}
                           className="w-full h-full object-cover"
                         />
-                      </div>
+                      ) : (
+                        <img
+                          src={study.logo}
+                          alt={study.companyName}
+                          className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white shadow-lg"
+                        />
+                      )}
                     </div>
                     
                     {/* Content Section */}
