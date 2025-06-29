@@ -64,7 +64,7 @@ const Stats = () => {
   }, [stats]);
   
   return (
-    <section className="bg-blue-600 py-20 px-4 sm:px-6 lg:px-8 mt-10 font-poppins">
+    <section className="bg-blue-600 mt-0.5 py-20 px-4 sm:px-6 lg:px-8  font-poppins">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (

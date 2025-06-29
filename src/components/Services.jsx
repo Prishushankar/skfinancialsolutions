@@ -78,38 +78,37 @@ const Services = () => {  const mainServices = [
       description: "Competitive rates with flexible terms."
     },
   ];
-    // Animation variants
+    // Animation variants with optimized performance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2
+        staggerChildren: 0.15, // Reduced stagger time
+        delayChildren: 0.1 // Reduced delay
       }
     }
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: 20, opacity: 0 }, // Reduced distance
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 70,
-        duration: 0.5
+        type: "tween", // Changed from spring to tween for better performance
+        duration: 0.3 // Faster animation
       }
     }
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { opacity: 0, y: -10 }, // Reduced distance
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.6 
+        duration: 0.4 // Faster animation
       }
     }
   };
@@ -172,7 +171,7 @@ const Services = () => {  const mainServices = [
           className="text-center mb-16"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-10%" }} // Add margin to start animation earlier
           variants={titleVariants}
         >
           {/* Small decorative element above title */}
@@ -228,19 +227,20 @@ const Services = () => {  const mainServices = [
           </div>
         </motion.div>
 
-        {/* Main Services - Three cards with navigation */}
+        {/* Main Services - Three cards with navigation - Optimized */}
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }} // Reduced threshold for earlier loading
         >
           {mainServices.map((service, index) => (
             <motion.div
               key={`service-${index}`}
               variants={itemVariants}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
+              className="will-change-transform" // Add will-change for better performance
+              whileHover={{ y: -5, transition: { duration: 0.2 } }} // Simplified hover effect
             >
               <ServiceCard
                 title={service.title}
@@ -254,7 +254,7 @@ const Services = () => {  const mainServices = [
           ))}
         </motion.div>
         
-        {/* Animated floating elements */}
+        {/* Simplified floating elements */}
         <div className="hidden md:block">
           <motion.div 
             className="absolute top-20 left-10 w-16 h-16 rounded-full bg-blue-400 opacity-20"
