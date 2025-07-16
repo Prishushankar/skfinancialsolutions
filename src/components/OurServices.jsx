@@ -229,9 +229,9 @@ const OurServices = () => {
   }, []);
 
   return (
-    <section className="bg-black text-white py-20 px-4 sm:px-6 lg:px-20">
+    <section className="bg-black text-white py-20 px-4 sm:px-6 lg:px-20 mt-16">
       <div className=" mx-auto">
-        {/* Header */}        <div className="mb-16">
+        {/* Header */}        <div className="mb-10">
           <p className="text-primary text-md font-medium uppercase tracking-wider mb-4 font-poppins">
             OUR FINANCIAL SERVICES
           </p>
@@ -244,12 +244,12 @@ const OurServices = () => {
         {/* Services Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Content - Scrollable Sections */}
-          <div className="space-y-32 mb-60">
+          <div className="space-y-20 mb-40">
             {services.map((service, index) => (
               <div
                 key={service.id}
                 ref={(el) => (sectionRefs.current[index] = el)}
-                className="py-20 flex flex-col justify-center"
+                className="py-12 flex flex-col justify-center"
               >
                 {/* Icon */}
                 <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-8">
@@ -294,7 +294,7 @@ const OurServices = () => {
 
           {/* Right Image - Sticky */}
           <div className="relative">
-            <div className="sticky top-28 h-[80vh]">
+            <div className="sticky top-28 h-[60vh]">
               <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl h-full w-10/12 relative ml-28">
                 {services.map((service, index) => (
                   <img

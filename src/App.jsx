@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import NewsRoutePage from "./pages/NewsRoutePage";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 import Stats from "./components/Stats";
@@ -35,7 +36,7 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
-      <div className="">
+      <div className="overflow-x-hidden max-w-full">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/loans" element={<LoanPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/news" element={<NewsRoutePage />} />
         </Routes>
         <Footer />
       </div>

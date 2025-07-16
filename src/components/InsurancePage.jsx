@@ -401,7 +401,7 @@ const InsurancePage = () => {
     },
   ];
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden pt-24">
       {/* SIP Calculator Modal */}
       {showSIPCalculator && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">

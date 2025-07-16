@@ -99,7 +99,7 @@ const About = () => {
   // Existing return statement
   return (    <motion.section
       ref={sectionRef}
-      className="bg-gradient-to-b from-white to-gray-50 py-20 px-4 sm:px-6 lg:px-8 font-poppins relative overflow-hidden"
+      className="bg-gradient-to-b from-white to-gray-50 py-20 px-4 sm:px-6 lg:px-8 font-poppins relative overflow-hidden pt-32"
       initial="hidden"
       animate={controls}
       variants={containerVariants}

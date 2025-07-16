@@ -46,7 +46,7 @@ const WhyChoose = () => {
   ];
 
   return (
-    <section className="bg-white py-20 px-4 sm:px-6 lg:px-20">
+    <section className="bg-white py-24 px-4 sm:px-6 lg:px-20 mt-16">
       <div className=" mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left Content */}

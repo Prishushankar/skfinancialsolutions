@@ -225,7 +225,7 @@ const LoanPage = () => {
     },
   ];
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden pt-24">
       {/* Hero Section with Financial Background */}
       <motion.div 
         initial={{ opacity: 0 }}

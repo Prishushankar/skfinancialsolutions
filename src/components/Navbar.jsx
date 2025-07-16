@@ -1,67 +1,38 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const scrollTimeoutRef = useRef(null);
-
-  // Check if we're on mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Handle scroll events for hiding/showing navbar
   useEffect(() => {
-    // Throttled scroll handler for better performance
     const handleScroll = () => {
-      if (scrollTimeoutRef.current) return;
+      const currentScrollPos = window.scrollY;
       
-      scrollTimeoutRef.current = setTimeout(() => {
-        const currentScrollPos = window.scrollY;
-        
-        // On mobile, when menu is open, don't hide the navbar
-        if (isMobile && isMenuOpen) {
-          setVisible(true);
-        } else {
-          // Show navbar when scrolling up, hide when scrolling down
-          // Always show at top of page
-          setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      // Simple scroll logic: show when scrolling up or at top, hide when scrolling down
+      if (currentScrollPos < 10) {
+        // Always show at top of page
+        setVisible(true);
+      } else if (currentScrollPos > prevScrollPos) {
+        // Scrolling down - hide navbar (unless menu is open)
+        if (!isMenuOpen) {
+          setVisible(false);
         }
-        
-        // Close menu when scrolling significantly
-        if (isMenuOpen && Math.abs(currentScrollPos - prevScrollPos) > 20) {
-          setIsMenuOpen(false);
-        }
-        
-        setPrevScrollPos(currentScrollPos);
-        scrollTimeoutRef.current = null;
-      }, 100); // Throttle to improve performance
+      } else {
+        // Scrolling up - show navbar
+        setVisible(true);
+      }
+      
+      setPrevScrollPos(currentScrollPos);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [prevScrollPos, isMenuOpen, isMobile]);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos, isMenuOpen]);
 
-  // Toggle menu with improved handling for mobile
   const toggleMenu = () => {
-    // When opening the menu, ensure navbar is visible
-    if (!isMenuOpen) {
-      setVisible(true);
-    }
     setIsMenuOpen(!isMenuOpen);
   };
   
@@ -70,12 +41,15 @@ const Navbar = () => {
     { name: "Mutual Funds", href: "/mutual-funds" },
     { name: "Insurance", href: "/insurance" },
     { name: "Loans", href: "/loans" },
+    { name: "Market News", href: "/news" },
     { name: "About Us", href: "/about" },
   ];
   
   return (
     <header 
-      className={`bg-white shadow-sm sticky top-0 z-50 font-poppins border-b border-gray-100 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}
+      className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-sm font-poppins border-b border-gray-100 transition-transform duration-300 ease-in-out ${
+        visible ? 'translate-y-0' : '-translate-y-full'
+      }`}
     >        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
           {/* Left Section: Logo */}
@@ -85,7 +59,7 @@ const Navbar = () => {
               <img
                 src="/crop1.jpg"
                 alt="SkFinancial"
-                className="h-16 w-auto"
+                className="h-20 w-auto"
               />
             </div>
           </div>
@@ -97,7 +71,7 @@ const Navbar = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-text-secondary hover:text-primary px-3 py-2 font-medium transition-colors duration-200 text-sm"
+                  className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors duration-200 text-sm"
                 >
                   {item.name}
                 </Link>
@@ -108,7 +82,7 @@ const Navbar = () => {
           {/* Right Section: CTA Button */}
           <div className="hidden md:block flex-shrink-0">
             <Link to="/contact">
-              <button className="bg-primary text-white hover:bg-primary-dark px-6 py-2 text-sm font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm hover:shadow-md">
+              <button className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
                 Get in touch
               </button>
             </Link>
@@ -118,7 +92,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-text-secondary hover:text-text-primary focus:outline-none focus:text-text-primary p-2"
+              className="text-gray-700 hover:text-gray-900 focus:outline-none p-2"
               aria-label="Toggle mobile menu"
             >
               {isMenuOpen ? (
@@ -156,18 +130,18 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation - with improved transition */}
+        {/* Mobile Navigation */}
         <div 
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            isMenuOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
-          }`}
+          className={`md:hidden transition-all duration-300 ease-in-out ${
+            isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          } overflow-hidden`}
         >            
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-secondary border-t">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-100">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className="block px-3 py-2 text-base font-medium text-text-secondary hover:text-primary hover:bg-secondary-dark rounded-md transition-colors duration-200"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
@@ -175,7 +149,7 @@ const Navbar = () => {
             ))}              
             <div className="pt-4">
               <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
-                <button className="w-full bg-primary text-white hover:bg-primary-dark px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm hover:shadow-md">
+                <button className="w-full bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200">
                   Get in touch
                 </button>
               </Link>

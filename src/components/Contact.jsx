@@ -604,7 +604,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-b from-white to-gray-50 py-16 lg:py-24 font-poppins">
+    <div className="w-full bg-gradient-to-b from-white to-gray-50 py-16 lg:py-24 font-poppins pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           className="text-center mb-14"
