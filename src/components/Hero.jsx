@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import NewsPage from "./NewsPage";
+import NewsPage from "./NewsPage.jsx";
 import { Link, useNavigate } from "react-router-dom"; // MODIFIED: Imported useNavigate
 import { useState } from "react";
 
