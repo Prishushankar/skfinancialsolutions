@@ -1,249 +1,192 @@
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import NewsPage from "./NewsPage";
+import { Link, useNavigate } from "react-router-dom"; // MODIFIED: Imported useNavigate
+import { useState } from "react";
 
 const Hero = () => {
-  const heroRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
+  const [showNews, setShowNews] = useState(false);
+  const navigate = useNavigate(); // MODIFIED: Added navigate hook
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
-      },
-    },
+  // MODIFIED: This function decides whether to show the modal or navigate
+  const handleNewsButtonClick = () => {
+    // For screen sizes less than 'lg' (1024px), navigate to the /news page
+    if (window.innerWidth < 1024) {
+      navigate('/news');
+    } else {
+      // For larger screens, show the modal
+      setShowNews(true);
+    }
   };
 
-  const iconVariants = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 260,
-        damping: 20,
-        delay: 0.5,
-      },
-    },
-  };
-
-  const graphLineVariants = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: {
-      pathLength: 1,
-      opacity: 1,
-      transition: {
-        duration: 2,
-        ease: "easeInOut",
-        delay: 0.3,
-      },
-    },
-  };
   return (
-    <div
-      ref={heroRef}
-      className="relative overflow-hidden bg-gradient-to-b from-white to-blue-50 min-h-[70vh] max-h-[80vh] border-b-4 border-blue-600"
-    >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 z-0">
+    // The parent container needs to be relative for the absolute child to be positioned correctly
+    <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen w-full pt-24 sm:pt-28 md:pt-32" style={{ maxWidth: "100vw", scrollBehavior: "smooth" }}>
+      {/* Grid SVG Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none">
         <svg
-          className="absolute w-full h-full opacity-60"
+          className="w-full h-full opacity-20"
+          viewBox="0 0 100 100"
+          fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
         >
           <defs>
-            <pattern
-              id="grid"
-              width="40"
-              height="40"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 40 0 L 0 0 0 40"
-                fill="none"
-                stroke="rgba(46, 56, 242, 0.05)"
-                strokeWidth="1"
-              />
+            <pattern id="fullGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(46,56,242,0.1)" strokeWidth="0.5" />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
+          <rect width="100" height="100" fill="url(#fullGrid)" />
         </svg>
-
-        {/* Floating Particles */}
-        {[...Array(30)].map((_, i) => {
-          const size = Math.random() * 8 + 4;
-          return (
-            <motion.div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                width: size,
-                height: size,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                backgroundColor:
-                  i % 3 === 0
-                    ? "rgba(46, 56, 242, 0.2)"
-                    : i % 3 === 1
-                    ? "rgba(16, 185, 129, 0.2)"
-                    : "rgba(99, 102, 241, 0.15)",
-              }}
-              animate={{
-                y: [0, -30, 0],
-                x: [0, Math.random() * 20 - 10, 0],
-                scale: [1, Math.random() * 0.5 + 0.8, 1],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: Math.random() * 2,
-              }}
-            />
-          );
-        })}
       </div>
 
-      {/* Graph Lines */}
-      <div className="absolute top-1/3 left-0 right-0 h-32 z-10 overflow-hidden">
-        <motion.svg
-          viewBox="0 0 1200 200"
-          className="w-full h-full absolute"
-          style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+      {/* Centered "Let's Talk Growth" Badge */}
+      <div className="relative z-10 w-full flex justify-center px-4 mt-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
         >
-          <motion.path
-            d="M0,150 C50,150 100,130 150,100 C200,80 250,120 300,110 C350,100 400,80 450,70 C500,60 550,90 600,80 C650,70 700,60 750,50 C800,40 850,30 900,25 C950,20 1000,10 1050,5 C1100,0 1150,5 1200,0"
-            fill="none"
-            stroke="rgba(16, 185, 129, 0.4)"
-            strokeWidth="3"
-            variants={graphLineVariants}
-            initial="hidden"
-            animate="visible"
-          />
-        </motion.svg>
+          <div className="inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full bg-white/90 backdrop-blur-sm border border-gray-200 text-black text-sm sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+            <svg className="w-4 h-4 sm:w-6 sm:h-6 mr-2 sm:mr-3" fill="blue" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            Let&apos;s Talk Growth
+          </div>
+        </motion.div>
       </div>
 
-      {/* Main Content */}      <motion.section
-        className="relative pt-20 pb-16 mb-12 px-6 lg:px-8 z-20"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
-      >
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Floating Icons */}
-          <div className="absolute inset-0 w-full max-w-6xl mx-auto pointer-events-none z-10">
-            <motion.div
-              className="absolute"
-              style={{ top: "-15px", left: "5%" }}
-              variants={iconVariants}
-              animate={{
-                y: [0, -15, 0],
-                transition: {
-                  duration: 3,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                },
-              }}
-            >
-              <svg
-                className="w-10 h-10 text-green-500 opacity-70"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="..." />
-              </svg>
-            </motion.div>
-            <motion.div
-              className="absolute"
-              style={{ top: "40px", right: "10%" }}
-              variants={iconVariants}
-              animate={{
-                y: [0, -12, 0],
-                transition: {
-                  duration: 3.5,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                },
-              }}
-            >
-              <svg
-                className="w-12 h-12 text-blue-500 opacity-70"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="..." />
-              </svg>
-            </motion.div>
-          </div>
+      {/* Centered Heading */}
+      <div className="relative z-10 w-full flex justify-center mt-6 sm:mt-8 px-4">
+        <motion.h1
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        >
+          <span className="block">Your Goals.</span>
+          <span className="text-blue-600 block bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent pb-2 pt-1 sm:pt-2">Our Strategy</span>
+        </motion.h1>
+      </div>
 
-          {/* Badge */}
-          <motion.div
-            className="mb-8 inline-block"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+      {/* Centered Growth Graph */}
+      <div className="relative z-10 w-full flex justify-center mt-6 md:-mt-4 lg:-mt-8 px-4">
+        <motion.div
+          className="w-full max-w-sm sm:max-w-2xl md:max-w-4xl"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+        >
+          <svg
+            className="w-full h-auto"
+            viewBox="0 0 110 45"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="xMidYMid meet"
           >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white border-gray-200 border text-black text-md font-medium font-poppins shadow-md">
-              <svg className="w-5 h-5 mr-2" fill="blue" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg >
-              Let&apos;s Talk Growth
-            </div>
-          </motion.div>
+            <defs>
+              <pattern id="chartGrid" width="11" height="7" patternUnits="userSpaceOnUse">
+                <path d="M 11 0 L 0 0 0 7" fill="none" stroke="rgba(46,56,242,0.15)" strokeWidth="0.6" />
+              </pattern>
+              <linearGradient id="chartFade" x1="0" y1="0" x2="0" y2="1">
+                <stop stopColor="#10B981" stopOpacity="0.2" />
+                <stop offset="1" stopColor="#10B981" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <rect width="110" height="45" fill="url(#chartGrid)" />
+            <motion.path
+              d="M8,37 L18,34 L28,36 L38,30 L48,26 L58,30 L68,23 L78,19 L88,17 L98,14 L108,12"
+              fill="none"
+              stroke="#10B981"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 3, ease: "easeInOut", delay: 1 }}
+            />
+            <motion.path
+              d="M8,37 L18,34 L28,36 L38,30 L48,26 L58,30 L68,23 L78,19 L88,17 L98,14 L108,12 L108,45 L8,45 Z"
+              fill="url(#chartFade)"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 2, delay: 2 }}
+            />
+            <circle cx="8" cy="37" r="1.5" fill="#2563EB" />
+            <circle cx="48" cy="26" r="1.5" fill="#10B981" />
+            <circle cx="88" cy="17" r="1.5" fill="#10B981" />
+            <g>
+              <circle cx="106" cy="12" r="2.5" fill="#2563EB" />
+              <text x="106" y="12.2" fontSize="3.2" fill="#fff" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle">✓</text>
+            </g>
+            <motion.g
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 2.5 }}
+            >
+              <text x="104" y="8.5" fontSize="3" fill="#2563EB" fontWeight="bold" textAnchor="middle">Growth</text>
+            </motion.g>
+          </svg>
+        </motion.div>
+      </div>
 
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-800 tracking-tight leading-tight mt-4">
-            Your Goals
-            <span className="block text-primary">Our Strategy</span>
-          </h1>
-
-          {/* Subtext */}
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto mt-6">
-            We&apos;re a dedicated financial solutions firm that blends strategy,
-            technology, and expertise to grow wealth and optimize financial
-            performance.
-          </p>          {/* CTA */}
-          <div className="mt-8">
-          
-            <Link to="/contact">
-              <button className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow font-semibold transition">
-                Schedule Your Financial Growth
-                <svg
-                  className="ml-2 w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
+      {/* Main Content & Buttons */}
+      <section className="relative flex justify-center items-center px-4 sm:px-6 md:px-8 z-10 w-full mt-4 sm:mt-0">
+        <div className="w-full max-w-lg sm:max-w-2xl flex flex-col justify-center items-center text-center space-y-6">
+          <motion.p
+            className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
+          >
+            We're a dedicated financial solutions firm that blends strategy, technology, and expertise to grow wealth and optimize financial performance.
+          </motion.p>
+          <motion.div
+            className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center w-full"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
+          >
+            <Link to="/contact" className="w-full sm:w-auto">
+              <button className="group inline-flex items-center justify-center w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-xl shadow-xl font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-2xl active:scale-95">
+                <span>Get Started</span>
+                <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </button>
             </Link>
-        
-          </div>
+            <motion.button
+              className="group inline-flex items-center justify-center w-full sm:w-auto bg-white/90 backdrop-blur-sm border border-gray-300 shadow-lg hover:shadow-xl rounded-xl px-6 py-3 text-base font-semibold text-gray-800 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 transform hover:scale-105 active:scale-95"
+              // MODIFIED: Updated onClick handler
+              onClick={handleNewsButtonClick}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 1.1, ease: "easeOut" }}
+            >
+              <svg className="w-5 h-5 mr-2 text-red-600 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clipRule="evenodd" />
+                <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
+              </svg>
+              <span>Market News</span>
+            </motion.button>
+          </motion.div>
         </div>
-      </motion.section>
+      </section>
+
+      {/* News Modal - MODIFIED FOR DESKTOP ONLY */}
+      {showNews && (
+        // MODIFIED: Positioning is now absolute to the parent div, not fixed.
+        // It's hidden on mobile and appears as a sidebar on large screens (lg).
+        <motion.div
+          className="absolute z-30 top-28 right-4 hidden lg:block"
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          {/* MODIFIED: Pass the close function as a prop */}
+          <NewsPage onClose={() => setShowNews(false)} />
+        </motion.div>
+      )}
     </div>
   );
 };
