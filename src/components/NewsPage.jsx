@@ -115,7 +115,7 @@ const NewsPage = ({ onClose }) => {
   };
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-200 p-8 flex flex-col w-full max-w-lg mx-auto my-12 relative min-h-[590px]">
+    <div className="bg-white/90 backdrop-blur-sm mt-32 rounded-2xl shadow-2xl border border-gray-200 p-8 flex flex-col w-full max-w-lg mx-auto my-12 relative min-h-[590px]">
       <div className="flex items-center justify-between mb-8 relative">
         <div className="flex items-center">
           <h3 className="text-2xl font-bold text-gray-800 flex items-center">
