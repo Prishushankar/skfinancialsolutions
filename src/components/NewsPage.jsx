@@ -9,95 +9,90 @@ const NewsPage = ({ onClose }) => {
     nifty: { value: 0, change: 0 },
   });
   const [loading, setLoading] = useState(true);
-  
-  // MODIFIED: Separated error states for news and market data
   const [newsError, setNewsError] = useState(null);
   const [marketError, setMarketError] = useState(null);
-  
   const hasFetchedData = useRef(false);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      // Clear previous news error before fetching
+    const fetchData = async () => {
       setNewsError(null);
-      try {
-        const NEWS_API_KEY = import.meta.env.VITE_NEWS_API_KEY || 'your-api-key-here';
-        const newsResponse = await fetch(
-          `https://newsapi.org/v2/everything?q=(India AND (financial OR stock OR market OR economy OR RBI OR SEBI OR BSE OR NSE))&language=en&sortBy=publishedAt&pageSize=10&apiKey=${NEWS_API_KEY}`
-        );
-        if (!newsResponse.ok) {
-            throw new Error('Failed to fetch news data.');
-        }
-        const newsData = await newsResponse.json();
-        const formattedNews = newsData.articles?.map((article) => ({
-            title: article.title,
-            description: article.description,
-            source: article.source.name,
-            publishedAt: new Date(article.publishedAt),
-            url: article.url,
-        })) || [];
-        setNews(formattedNews.slice(0, 8));
-      } catch (err) {
-        console.error("News fetch error:", err);
-        // MODIFIED: Set only the news-specific error
-        setNewsError("Failed to fetch latest news.");
-      }
-    };
-
-    const fetchMarketData = async () => {
-      // Clear previous market error before fetching
       setMarketError(null);
-      const API_KEY = import.meta.env.VITE_TWELVEDATA_API_KEY;
-      if (!API_KEY || API_KEY.includes('YOUR')) {
-        setMarketError("Market API key not configured.");
+
+      const R_API_KEY = import.meta.env.VITE_RAPIDAPI_KEY;
+      const R_API_HOST = import.meta.env.VITE_RAPIDAPI_HOST;
+      const NEWS_API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+
+      // This check is now safer
+      if (!R_API_KEY || !R_API_HOST || !NEWS_API_KEY) {
+        setNewsError("One or more API keys are not configured.");
+        setMarketError("One or more API keys are not configured.");
+        setLoading(false);
         return;
       }
-      try {
-        const symbols = { sensex: ':SENSEX', nifty: ':NIFTY50' };
-        
-        const sensexResponse = await fetch(`https://api.twelvedata.com/quote?symbol=${symbols.sensex}&apikey=${API_KEY}`);
-        const niftyResponse = await fetch(`https://api.twelvedata.com/quote?symbol=${symbols.nifty}&apikey=${API_KEY}`);
 
-        if (!sensexResponse.ok || !niftyResponse.ok) {
-          throw new Error('Network response for market data was not ok.');
+      const rapidApiOptions = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': R_API_KEY,
+          'X-RapidAPI-Host': R_API_HOST
         }
+      };
 
-        const sensexQuote = await sensexResponse.json();
-        const niftyQuote = await niftyResponse.json();
+      const marketPromise = fetch('https://yahoo-finance1.p.rapidapi.com/market/v2/get-quotes?region=IN&symbols=%5ENSEI%2C%5EBSESN', rapidApiOptions)
+        .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch market data.'))
+        .then(marketJson => {
+          const sensexQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^BSESN');
+          const niftyQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^NSEI');
+          if (sensexQuote && niftyQuote) {
+            setMarketData({
+              sensex: { value: sensexQuote.regularMarketPrice, change: sensexQuote.regularMarketChangePercent },
+              nifty: { value: niftyQuote.regularMarketPrice, change: niftyQuote.regularMarketChangePercent },
+            });
+          } else {
+            setMarketError("Index data not available.");
+          }
+        })
+        .catch(err => {
+          console.error("Market data fetch error:", err);
+          setMarketError("Failed to load market data.");
+        });
 
-        if (sensexQuote.close && niftyQuote.close) {
-          setMarketData({
-            sensex: { value: parseFloat(sensexQuote.close), change: parseFloat(sensexQuote.percent_change) },
-            nifty: { value: parseFloat(niftyQuote.close), change: parseFloat(niftyQuote.percent_change) },
-          });
-        } else {
-          throw new Error("Invalid data received from Twelve Data.");
-        }
-      } catch (err) {
-        console.error("Market data fetch error:", err);
-        // MODIFIED: Set only the market-specific error
-        setMarketError("Failed to load live market data.");
-      }
-    };
+      const newsPromise = fetch(`https://newsapi.org/v2/top-headlines?country=in&category=business&pageSize=10&apiKey=${NEWS_API_KEY}`)
+        .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch news.'))
+        .then(newsJson => {
+          if (newsJson?.status === "error") {
+            throw new Error(newsJson.message || "News API error.");
+          }
+          if (newsJson?.articles) {
+            const formattedNews = newsJson.articles.map((article) => ({
+              title: article.title,
+              description: article.description,
+              source: article.source.name,
+              publishedAt: new Date(article.publishedAt),
+              url: article.url,
+            }));
+            setNews(formattedNews);
+          } else {
+            setNewsError("No news articles available.");
+          }
+        })
+        .catch(err => {
+          console.error("News fetch error:", err);
+          setNewsError(err.message);
+        });
 
-    const initialLoad = async () => {
       setLoading(true);
-      await Promise.all([fetchNews(), fetchMarketData()]);
+      await Promise.allSettled([marketPromise, newsPromise]);
       setLoading(false);
     };
 
     if (!hasFetchedData.current) {
-        initialLoad();
-        hasFetchedData.current = true;
+      fetchData();
+      hasFetchedData.current = true;
     }
 
-    const newsInterval = setInterval(fetchNews, 15 * 60 * 1000);
-    const marketInterval = setInterval(fetchMarketData, 5 * 60 * 1000);
-
-    return () => {
-      clearInterval(newsInterval);
-      clearInterval(marketInterval);
-    };
+    const interval = setInterval(fetchData, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const getTimeAgo = (date) => {
@@ -113,14 +108,7 @@ const NewsPage = ({ onClose }) => {
   };
 
   const handleNewsClick = (newsItem) => {
-    if (newsItem.url && newsItem.url !== "#") {
-      window.open(newsItem.url, "_blank");
-    } else {
-      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(
-        `${newsItem.title} ${newsItem.source}`
-      )}`;
-      window.open(searchUrl, "_blank");
-    }
+    if (newsItem.url) window.open(newsItem.url, "_blank");
   };
 
   return (
@@ -136,46 +124,26 @@ const NewsPage = ({ onClose }) => {
             Live
           </div>
         </div>
-        <button
-          className="text-gray-400 hover:text-red-600 text-2xl font-bold bg-white rounded-full p-2 shadow focus:outline-none focus:ring-2 focus:ring-red-400 ml-3"
-          onClick={onClose || (() => navigate('/'))}
-          aria-label="Close News"
-        >&times;</button>
+        <button className="text-gray-400 hover:text-red-600 text-2xl font-bold bg-white rounded-full p-2 shadow focus:outline-none focus:ring-2 focus:ring-red-400 ml-3" onClick={onClose || (() => navigate('/'))} aria-label="Close News">&times;</button>
       </div>
-
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-xl">
           <div className="text-xs text-gray-600 font-medium">SENSEX</div>
-          <div className="text-xl font-bold text-gray-800">
-            {marketData.sensex.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className={`text-xs font-semibold ${marketData.sensex.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {marketData.sensex.change >= 0 ? '+' : ''}{marketData.sensex.change.toFixed(2)}%
-          </div>
+          <div className="text-xl font-bold text-gray-800">{marketData.sensex.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className={`text-xs font-semibold ${marketData.sensex.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>{marketData.sensex.change >= 0 ? '+' : ''}{marketData.sensex.change.toFixed(2)}%</div>
         </div>
         <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl">
           <div className="text-xs text-gray-600 font-medium">NIFTY 50</div>
-          <div className="text-xl font-bold text-gray-800">
-            {marketData.nifty.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className={`text-xs font-semibold ${marketData.nifty.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {marketData.nifty.change >= 0 ? '+' : ''}{marketData.nifty.change.toFixed(2)}%
-          </div>
+          <div className="text-xl font-bold text-gray-800">{marketData.nifty.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className={`text-xs font-semibold ${marketData.nifty.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>{marketData.nifty.change >= 0 ? '+' : ''}{marketData.nifty.change.toFixed(2)}%</div>
         </div>
       </div>
-      
-      {/* MODIFIED: Display market error here, separately from the news list */}
-      {marketError && (
-        <div className="text-center py-2 text-red-600 text-sm">⚠️ {marketError}</div>
-      )}
-
+      {marketError && (<div className="text-center py-2 text-red-600 text-sm">⚠️ {marketError}</div>)}
       <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar" style={{ scrollbarWidth: 'thin', scrollbarColor: '#CBD5E1 #F1F5F9', maxHeight: '420px' }}>
         {loading ? (
-          <div className="space-y-4 pt-2">
-            {[1, 2, 3, 4].map((i) => (<div key={i} className="animate-pulse"><div className="h-4 bg-gray-200 rounded mb-2"></div><div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div><div className="h-3 bg-gray-200 rounded w-1/2"></div></div>))}
-          </div>
+          <div className="space-y-4 pt-2">{[1, 2, 3, 4].map((i) => (<div key={i} className="animate-pulse"><div className="h-4 bg-gray-200 rounded mb-2"></div><div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div><div className="h-3 bg-gray-200 rounded w-1/2"></div></div>))}</div>
         ) : newsError ? (
-           <div className="text-center py-8">
+          <div className="text-center py-8">
             <div className="text-red-600 text-base mb-2">⚠️ {newsError}</div>
           </div>
         ) : (
