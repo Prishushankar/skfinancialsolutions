@@ -15,6 +15,7 @@ const NewsPage = ({ onClose }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      // Clear previous errors before fetching
       setNewsError(null);
       setMarketError(null);
 
@@ -22,10 +23,10 @@ const NewsPage = ({ onClose }) => {
       const R_API_HOST = import.meta.env.VITE_RAPIDAPI_HOST;
       const NEWS_API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
-      // This check is now safer
-      if (!R_API_KEY || !R_API_HOST || !NEWS_API_KEY) {
+      // Safer check for all keys
+      if (!R_API_KEY || R_API_KEY.includes('YOUR') || !R_API_HOST || !NEWS_API_KEY || NEWS_API_KEY.includes('your-api-key')) {
         setNewsError("One or more API keys are not configured.");
-        setMarketError("One or more API keys are not configured.");
+        setMarketError("Please check your .env file and Vercel settings.");
         setLoading(false);
         return;
       }
@@ -38,8 +39,9 @@ const NewsPage = ({ onClose }) => {
         }
       };
 
+      // We will run them and handle their success or failure independently
       const marketPromise = fetch('https://yahoo-finance1.p.rapidapi.com/market/v2/get-quotes?region=IN&symbols=%5ENSEI%2C%5EBSESN', rapidApiOptions)
-        .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch market data.'))
+        .then(res => res.ok ? res.json() : Promise.reject(new Error('Failed to fetch market data.')))
         .then(marketJson => {
           const sensexQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^BSESN');
           const niftyQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^NSEI');
@@ -58,12 +60,12 @@ const NewsPage = ({ onClose }) => {
         });
 
       const newsPromise = fetch(`https://newsapi.org/v2/top-headlines?country=in&category=business&pageSize=10&apiKey=${NEWS_API_KEY}`)
-        .then(res => res.ok ? res.json() : Promise.reject('Failed to fetch news.'))
+        .then(res => res.ok ? res.json() : Promise.reject(new Error('Failed to fetch news.')))
         .then(newsJson => {
           if (newsJson?.status === "error") {
             throw new Error(newsJson.message || "News API error.");
           }
-          if (newsJson?.articles) {
+          if (newsJson?.articles && newsJson.articles.length > 0) {
             const formattedNews = newsJson.articles.map((article) => ({
               title: article.title,
               description: article.description,
@@ -73,7 +75,7 @@ const NewsPage = ({ onClose }) => {
             }));
             setNews(formattedNews);
           } else {
-            setNewsError("No news articles available.");
+            setNewsError("No news articles available at the moment.");
           }
         })
         .catch(err => {
@@ -82,6 +84,7 @@ const NewsPage = ({ onClose }) => {
         });
 
       setLoading(true);
+      // Use Promise.allSettled to ensure both fetches complete regardless of individual failure
       await Promise.allSettled([marketPromise, newsPromise]);
       setLoading(false);
     };
