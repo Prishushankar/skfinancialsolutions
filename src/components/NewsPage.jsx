@@ -1,20 +1,23 @@
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+
+// The URL for your deployed FastAPI backend
+const API_URL = 'https://financescraper.onrender.com/api/all-performance';
 
 /**
  * Renders a single row in the performance table.
  * @param {{ item: object }} props - The properties for the component.
- * @param {object} props.item - The index data for the row.
  */
 const IndexRow = ({ item }) => {
+    // This function determines the text color based on the value (positive/negative)
     const getValueColor = (value) => {
+        // Remove commas and convert to a number
         const num = parseFloat(String(value).replace(/,/g, ''));
-        if (isNaN(num)) return 'text-gray-600';
+        if (isNaN(num) || num === 0) return 'text-gray-600'; // Neutral color for zero or non-numeric values
         return num < 0 ? 'text-red-600' : 'text-green-600';
     };
 
     return (
-        <tr className="border-b border-gray-200 hover:bg-gray-50">
+        <tr className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200">
             <td className="p-3 text-sm font-semibold text-gray-800 whitespace-nowrap">{item.Name}</td>
             <td className="p-3 text-sm text-gray-800 font-bold whitespace-nowrap">{item.LTP}</td>
             <td className={`p-3 text-sm whitespace-nowrap font-medium ${getValueColor(item.YTD)}`}>{item.YTD}</td>
@@ -30,27 +33,35 @@ const IndexRow = ({ item }) => {
 };
 
 /**
- * Renders the main table with headers and data sections.
+ * Renders the main table with headers and data sections for a given market.
  * @param {{ indices: object }} props - The properties for the component.
  */
 const PerformanceTable = ({ indices }) => {
+    if (!indices || Object.keys(indices).length === 0) {
+        return <div className="text-center p-10 text-gray-500">No performance data available for this market.</div>;
+    }
+
     const headers = ["Name", "LTP", "YTD(%)", "1Week(%)", "1Month(%)", "3Months(%)", "6Months(%)", "1Year(%)", "2Years(%)", "3Years(%)"];
 
     return (
-        <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-[0_2px_8px_0_rgba(34,34,64,0.10)] mt-6">
             <table className="min-w-full bg-white text-left">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 sticky top-0">
                     <tr className="border-b-2 border-gray-300">
                         {headers.map(h => <th key={h} className="p-3 text-xs font-bold text-gray-500 uppercase tracking-wider">{h}</th>)}
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                    <tr><th colSpan={headers.length} className="p-2 text-sm font-bold text-gray-700 bg-gray-100">KEY INDICES</th></tr>
-                    {indices["Key Indices"]?.map(item => <IndexRow key={item.Name} item={item} />)}
-                    <tr><th colSpan={headers.length} className="p-2 text-sm font-bold text-gray-700 bg-gray-100">SECTORAL INDICES</th></tr>
-                    {indices["Sectoral Indices"]?.map(item => <IndexRow key={item.Name} item={item} />)}
-                    <tr><th colSpan={headers.length} className="p-2 text-sm font-bold text-gray-700 bg-gray-100">OTHER INDICES</th></tr>
-                    {indices["Other Indices"]?.map(item => <IndexRow key={item.Name} item={item} />)}
+                    {Object.entries(indices).map(([category, items]) => (
+                        <React.Fragment key={category}>
+                            <tr>
+                                <th colSpan={headers.length} className="p-2 text-sm font-bold text-gray-700 bg-gray-100 sticky top-12">
+                                    {category}
+                                </th>
+                            </tr>
+                            {items.map(item => <IndexRow key={item.Name} item={item} />)}
+                        </React.Fragment>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -59,32 +70,41 @@ const PerformanceTable = ({ indices }) => {
 
 /**
  * Displays the main market data cards for Sensex and Nifty.
- * @param {{ marketData: object, marketError: string|null }} props
+ * @param {{ sensexData: object, niftyData: object }} props
  */
-const MarketHeader = ({ marketData, marketError }) => (
-    <div className="mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-xl shadow">
-                <div className="text-sm text-gray-600 font-medium">SENSEX</div>
-                <div className="text-2xl font-bold text-gray-800">{marketData.sensex.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                <div className={`text-sm font-semibold ${marketData.sensex.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {marketData.sensex.change >= 0 ? '▲' : '▼'} {marketData.sensex.change.toFixed(2)}%
+const MarketHeader = ({ sensexData, niftyData }) => {
+    const getValueColor = (value) => {
+        const num = parseFloat(String(value).replace(/,/g, ''));
+        if (isNaN(num) || num === 0) return 'text-gray-600';
+        return num < 0 ? 'text-red-600' : 'text-green-600';
+    };
+
+    return (
+        <div className="mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* SENSEX Card */}
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-xl shadow-[0_4px_16px_0_rgba(34,34,64,0.12)]">
+                    <div className="text-sm text-gray-600 font-medium">SENSEX</div>
+                    <div className="text-2xl font-bold text-gray-800">{sensexData?.LTP || 'N/A'}</div>
+                    <div className={`text-sm font-semibold ${getValueColor(sensexData?.['1Week'])}`}>
+                        {parseFloat(sensexData?.['1Week']) >= 0 ? '▲' : '▼'} {sensexData?.['1Week'] || '0.00'}% (1 Week)
+                    </div>
                 </div>
-            </div>
-            <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl shadow">
-                <div className="text-sm text-gray-600 font-medium">NIFTY 50</div>
-                <div className="text-2xl font-bold text-gray-800">{marketData.nifty.value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
-                <div className={`text-sm font-semibold ${marketData.nifty.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {marketData.nifty.change >= 0 ? '▲' : '▼'} {marketData.nifty.change.toFixed(2)}%
+                {/* NIFTY Card */}
+                <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl shadow-[0_4px_16px_0_rgba(34,34,64,0.12)]">
+                    <div className="text-sm text-gray-600 font-medium">NIFTY 50</div>
+                    <div className="text-2xl font-bold text-gray-800">{niftyData?.LTP || 'N/A'}</div>
+                    <div className={`text-sm font-semibold ${getValueColor(niftyData?.['1Week'])}`}>
+                         {parseFloat(niftyData?.['1Week']) >= 0 ? '▲' : '▼'} {niftyData?.['1Week'] || '0.00'}% (1 Week)
+                    </div>
                 </div>
             </div>
         </div>
-        {marketError && <div className="text-center mt-2 py-1 text-red-600 text-sm">⚠️ {marketError}</div>}
-    </div>
-);
+    );
+};
 
 /**
- * A scrolling ticker for key indices.
+ * NEW: A scrolling ticker for key indices.
  * @param {{ items: Array<object> }} props
  */
 const ScrollingTicker = ({ items }) => {
@@ -92,20 +112,32 @@ const ScrollingTicker = ({ items }) => {
 
     const getValueColor = (value) => {
         const num = parseFloat(String(value).replace(/,/g, ''));
-        if (isNaN(num)) return 'text-gray-500';
-        return num < 0 ? 'text-red-500' : 'text-green-500';
+        if (isNaN(num) || num === 0) return 'text-gray-400';
+        return num < 0 ? 'text-red-400' : 'text-green-400';
     };
 
-    // Duplicate items to create a seamless loop
+    // Duplicate items to create a seamless scrolling loop
     const tickerItems = [...items, ...items];
 
     return (
         <div className="relative w-full overflow-hidden h-12 bg-gray-800 text-white mb-6 rounded-lg">
-            <div className="absolute whitespace-nowrap animate-marquee">
+            {/* We define the animation directly here for self-containment */}
+            <style>
+                {`
+                @keyframes marquee {
+                    0% { transform: translateX(0%); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-marquee {
+                    animation: marquee 60s linear infinite;
+                }
+                `}
+            </style>
+            <div className="absolute whitespace-nowrap animate-marquee flex items-center h-full">
                 {tickerItems.map((item, index) => (
-                    <div key={index} className="inline-flex items-center mx-4">
+                    <div key={index} className="inline-flex items-center mx-6">
                         <span className="font-bold text-sm">{item.Name}</span>
-                        <span className="ml-2 text-sm">{item.LTP}</span>
+                        <span className="ml-3 text-sm">{item.LTP}</span>
                         <span className={`ml-2 text-xs font-semibold ${getValueColor(item["1Week"])}`}>
                             ({item["1Week"]}%)
                         </span>
@@ -118,89 +150,92 @@ const ScrollingTicker = ({ items }) => {
 
 
 /**
- * The main page component that fetches and displays market performance data.
- * @param {{ onClose?: () => void }} props
+ * The main App component that fetches and displays market performance data.
  */
-const NewsPage = ({ onClose }) => {
-    const navigate = useNavigate();
-    const [indices, setIndices] = useState(null);
-    const [marketData, setMarketData] = useState({ sensex: { value: 0, change: 0 }, nifty: { value: 0, change: 0 } });
+export default function App() {
+    const [marketData, setMarketData] = useState(null);
+    const [selectedMarket, setSelectedMarket] = useState('BSE');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [marketError, setMarketError] = useState(null);
-    const hasFetchedData = useRef(false);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             setError(null);
-            setMarketError(null);
-
-            const R_API_KEY = import.meta.env.VITE_RAPIDAPI_KEY;
-            const R_API_HOST = import.meta.env.VITE_RAPIDAPI_HOST;
-
-            const rapidApiOptions = {
-                method: 'GET',
-                headers: { 'X-RapidAPI-Key': R_API_KEY, 'X-RapidAPI-Host': R_API_HOST }
-            };
-
-            const marketPromise = fetch('https://yahoo-finance1.p.rapidapi.com/market/v2/get-quotes?region=IN&symbols=%5ENSEI%2C%5EBSESN', rapidApiOptions)
-                .then(res => res.ok ? res.json() : Promise.reject(new Error('Failed to fetch market data.')))
-                .then(marketJson => {
-                    const sensexQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^BSESN');
-                    const niftyQuote = marketJson?.quoteResponse?.result?.find(q => q.symbol === '^NSEI');
-                    if (sensexQuote && niftyQuote) {
-                        setMarketData({
-                            sensex: { value: sensexQuote.regularMarketPrice, change: sensexQuote.regularMarketChangePercent },
-                            nifty: { value: niftyQuote.regularMarketPrice, change: niftyQuote.regularMarketChangePercent },
-                        });
-                    } else {
-                        setMarketError("Live index data not available.");
-                    }
-                }).catch(err => setMarketError(err.message));
-
-            const financeScraperPromise = fetch('https://financescraper.onrender.com')
-                .then(res => res.ok ? res.json() : Promise.reject(new Error(`Failed to fetch index data. Status: ${res.status}`)))
-                .then(data => setIndices(data))
-                .catch(err => setError(err.message));
-
-            await Promise.allSettled([marketPromise, financeScraperPromise]);
-            setLoading(false);
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data. Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setMarketData(data);
+            } catch (err) {
+                setError(err.message);
+                console.error("Fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
         };
 
-        if (!hasFetchedData.current) {
-            fetchData();
-            hasFetchedData.current = true;
-        }
-
-        const interval = setInterval(fetchData, 5 * 60 * 1000);
-        return () => clearInterval(interval);
+        fetchData();
     }, []);
 
-    return (
-        <div className="bg-white/95 backdrop-blur-sm mt-24 rounded-2xl shadow-xl border border-gray-200 p-6 flex flex-col w-full max-w-7xl mx-auto my-12 relative">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-2xl font-bold text-gray-800">Market Performance</h3>
-                <button className="text-gray-500 hover:text-red-600 text-3xl font-light" onClick={onClose || (() => navigate('/'))} aria-label="Close">&times;</button>
-            </div>
+    // Extract Sensex and Nifty data once marketData is available
+    const sensexData = marketData?.BSE_Indices?.['Key Indices']?.[0];
+    const niftyData = marketData?.NSE_Indices?.['Key Indices']?.[0];
+    
+    // Data for the ticker - use BSE Key Indices as a default, fallback to NSE
+    const tickerData = marketData?.BSE_Indices?.['Key Indices'] || marketData?.NSE_Indices?.['Key Indices'];
 
-            {loading && !indices ? (
-                <div className="text-center p-10 font-medium text-gray-500">Loading Market Data...</div>
-            ) : (
-                <>
-                    <MarketHeader marketData={marketData} marketError={marketError} />
-                    <ScrollingTicker items={indices ? indices["Key Indices"] : []} />
-                    {error && (
-                        <div className="text-center p-4 mb-4 text-red-600 bg-red-50 rounded-lg">
-                            <p className="font-bold">⚠️ Could not load performance table</p>
-                            <p className="text-sm">{error}</p>
-                        </div>
-                    )}
-                    {indices ? <PerformanceTable indices={indices} /> : !error && <div className="text-center p-10 text-gray-500">No performance data available.</div>}
-                </>
-            )}
+    return (
+        <div className="bg-gray-100 min-h-screen font-sans p-4 sm:p-6 lg:p-8">
+            {/* Enhanced shadow for main container */}
+            <div className="bg-white rounded-2xl shadow-[0_8px_32px_0_rgba(34,34,64,0.18)] border border-gray-200 p-6 flex flex-col w-full max-w-7xl mx-auto mt-24">
+                <h1 className="text-3xl font-bold text-gray-800 mb-4">Market Performance</h1>
+                {/* Render the header cards if data is available */}
+                {!loading && marketData && <MarketHeader sensexData={sensexData} niftyData={niftyData} />}
+                {/* Render the new scrolling ticker */}
+                {!loading && marketData && <ScrollingTicker items={tickerData} />}
+                <div className="flex space-x-2 border-b border-gray-200 mb-4">
+                    <button
+                        onClick={() => setSelectedMarket('BSE')}
+                        className={`px-4 py-2 text-sm font-semibold rounded-t-md transition-colors duration-200 ${
+                            selectedMarket === 'BSE' 
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                        }`}
+                    >
+                        BSE Indices
+                    </button>
+                    <button
+                        onClick={() => setSelectedMarket('NSE')}
+                        className={`px-4 py-2 text-sm font-semibold rounded-t-md transition-colors duration-200 ${
+                            selectedMarket === 'NSE' 
+                            ? 'bg-blue-600 text-white' 
+                            : 'bg-transparent text-gray-600 hover:bg-gray-200'
+                        }`}
+                    >
+                        NSE Indices
+                    </button>
+                </div>
+                {loading && (
+                    <div className="text-center p-10 font-medium text-gray-500">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                        Loading Market Data...
+                    </div>
+                )}
+                {error && (
+                    <div className="text-center p-4 my-4 text-red-700 bg-red-100 rounded-lg">
+                        <p className="font-bold">⚠️ Could not load data</p>
+                        <p className="text-sm">{error}</p>
+                    </div>
+                )}
+                {!loading && !error && marketData && (
+                    <PerformanceTable 
+                        indices={selectedMarket === 'BSE' ? marketData.BSE_Indices : marketData.NSE_Indices} 
+                    />
+                )}
+            </div>
         </div>
     );
-};
-
-export default NewsPage;
+}
