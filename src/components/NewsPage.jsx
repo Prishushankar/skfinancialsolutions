@@ -10,7 +10,7 @@ const API_URL = 'https://financescraper.onrender.com/api/all-performance';
  * @param {{ isExpanded: boolean }} props
  */
 const ChevronIcon = ({ isExpanded }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+    <svg xmlns="http://www.w.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
         <polyline points="6 9 12 15 18 9"></polyline>
     </svg>
 );
@@ -200,6 +200,14 @@ const MarketHeader = ({ sensexData, niftyData }) => {
  */
 const ScrollingTicker = ({ items }) => {
     if (!items || items.length === 0) return null;
+    
+    // FIX: This new function uses full, static class names that Tailwind can detect.
+    const getTickerValueColor = (value) => {
+        const num = parseFloat(String(value).replace(/,/g, ''));
+        if (isNaN(num) || num === 0) return 'text-gray-400';
+        return num < 0 ? 'text-red-400' : 'text-green-400';
+    };
+
     const tickerItems = [...items, ...items];
 
     return (
@@ -207,12 +215,13 @@ const ScrollingTicker = ({ items }) => {
             <style>{`@keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } } .animate-marquee { animation: marquee 60s linear infinite; }`}</style>
             <div className="absolute whitespace-nowrap animate-marquee flex items-center h-full">
                 {tickerItems.map((item, index) => {
-                    const itemValue = formatValue(item["1Week"]);
                     return (
                         <div key={index} className="inline-flex items-center mx-6">
                             <span className="font-bold text-sm">{item.Name}</span>
                             <span className="ml-3 text-sm">{item.LTP}</span>
-                            <span className={`ml-2 text-xs font-semibold ${itemValue.color.replace('600', '400')}`}>({itemValue.formatted}%)</span>
+                            <span className={`ml-2 text-xs font-semibold ${getTickerValueColor(item["1Week"])}`}>
+                                ({item["1Week"]}%)
+                            </span>
                         </div>
                     );
                 })}

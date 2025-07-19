@@ -41,7 +41,7 @@ const Navbar = () => {
     { name: "Mutual Funds", href: "/mutual-funds" },
     { name: "Insurance", href: "/insurance" },
     { name: "Loans", href: "/loans" },
-    { name: "Market News", href: "/news" },
+    { name: "Market Performance", href: "/news" },
     { name: "About Us", href: "/about" },
   ];
   
