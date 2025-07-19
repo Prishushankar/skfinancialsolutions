@@ -1,21 +1,13 @@
 import { motion } from "framer-motion";
-import NewsPage from "./NewsPage.jsx";
 import { Link, useNavigate } from "react-router-dom"; // MODIFIED: Imported useNavigate
-import { useState } from "react";
 
 const Hero = () => {
-  const [showNews, setShowNews] = useState(false);
   const navigate = useNavigate(); // MODIFIED: Added navigate hook
 
   // MODIFIED: This function decides whether to show the modal or navigate
   const handleNewsButtonClick = () => {
-    // For screen sizes less than 'lg' (1024px), navigate to the /news page
-    if (window.innerWidth < 1024) {
-      navigate('/news');
-    } else {
-      // For larger screens, show the modal
-      setShowNews(true);
-    }
+    // Always navigate to the /news page
+    navigate('/news');
   };
 
   return (
@@ -138,7 +130,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
           >
-            We're a dedicated financial solutions firm that blends strategy, technology, and expertise to grow wealth and optimize financial performance.
+            We&apos;re a dedicated financial solutions firm that blends strategy, technology, and expertise to grow wealth and optimize financial performance.
           </motion.p>
           <motion.div
             className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center w-full"
@@ -176,20 +168,7 @@ Schedule a Session</span>
       </section>
 
       {/* News Modal - MODIFIED FOR DESKTOP ONLY */}
-      {showNews && (
-        // MODIFIED: Positioning is now absolute to the parent div, not fixed.
-        // It's hidden on mobile and appears as a sidebar on large screens (lg).
-        <motion.div
-          className="absolute z-30 top-28 right-4 hidden lg:block"
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-        >
-          {/* MODIFIED: Pass the close function as a prop */}
-          <NewsPage onClose={() => setShowNews(false)} />
-        </motion.div>
-      )}
+      {/* Removed News Modal for desktop, always navigate to /news */}
     </div>
   );
 };
