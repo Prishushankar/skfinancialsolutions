@@ -41,7 +41,13 @@ const Navbar = () => {
     { name: "Mutual Funds", href: "/mutual-funds" },
     { name: "Insurance", href: "/insurance" },
     { name: "Loans", href: "/loans" },
-    { name: "Market Performance", href: "/news" },
+    // Remove old Market item, add new with submenu
+    {
+      name: "Market",
+      href: "/news" },
+    {
+      name: "News",
+       href: "/financial-news" },
     { name: "About Us", href: "/about" },
   ];
   
@@ -68,13 +74,33 @@ const Navbar = () => {
           <div className="hidden md:flex flex-grow justify-center">
             <nav className="flex space-x-8">
               {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors duration-200 text-sm"
-                >
-                  {item.name}
-                </Link>
+                item.submenu ? (
+                  <div key={item.name} className="relative group">
+                    <Link to={item.submenu[0].href} className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors duration-200 text-sm flex items-center" tabIndex={0}>
+                      {item.name}
+                      <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                    </Link>
+                    <div className="absolute left-0 mt-2 w-40 bg-white border border-gray-100 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
+                      {item.submenu.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          to={sub.href}
+                          className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 text-sm rounded-md transition-colors duration-200"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors duration-200 text-sm"
+                  >
+                    {item.name}
+                  </Link>
+                )
               ))}
             </nav>
           </div>
@@ -138,14 +164,35 @@ const Navbar = () => {
         >            
           <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-100">
             {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
+              item.submenu ? (
+                <div key={item.name} className="">
+                  <Link to={item.submenu[0].href} className="w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200 flex items-center" tabIndex={0}>
+                    {item.name}
+                    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  </Link>
+                  <div className="pl-4">
+                    {item.submenu.map((sub) => (
+                      <Link
+                        key={sub.name}
+                        to={sub.href}
+                        className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}              
             <div className="pt-4">
               <Link to="/contact" onClick={() => setIsMenuOpen(false)}>

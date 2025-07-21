@@ -16,6 +16,7 @@ import LoanPage from "./components/LoanPage";
 import About from "./components/about";
 import Contact from "./components/Contact";
 import ScrollToTop from "./components/ScrollToTop";
+import FinancialNews from "./components/financialNews";
 
 const HomePage = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/news" element={<NewsRoutePage />} />
+          <Route path="/financial-news" element={<FinancialNews />} />
         </Routes>
         <Footer />
       </div>
