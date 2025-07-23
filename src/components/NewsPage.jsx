@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // The URL for your deployed FastAPI backend
-const API_URL = 'https://financescraper.onrender.com/api/all-performance';
+const API_URL = 'https://financescraper-1.onrender.com/api/all-performance';
 
 // --- Helper Functions & Icons ---
 

@@ -17,6 +17,7 @@ import About from "./components/about";
 import Contact from "./components/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 import FinancialNews from "./components/financialNews";
+import Videos from "./components/videos"; // Importing the Videos component
 
 const HomePage = () => {
   return (
@@ -48,6 +49,7 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/news" element={<NewsRoutePage />} />
           <Route path="/financial-news" element={<FinancialNews />} />
+          <Route path="/videos" element={<Videos />} />
         </Routes>
         <Footer />
       </div>

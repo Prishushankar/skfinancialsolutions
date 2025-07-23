@@ -48,6 +48,7 @@ const Navbar = () => {
     {
       name: "News",
        href: "/financial-news" },
+       { name: "Videos", href: "/videos" },
     { name: "About Us", href: "/about" },
   ];
   

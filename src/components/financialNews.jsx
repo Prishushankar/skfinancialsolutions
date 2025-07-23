@@ -184,9 +184,7 @@ export default function App() {
                     )}
                 </main>
                 
-                <footer className="text-center mt-16 pt-8 border-t border-violet-500/20">
-                    <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Market Pulse. All Rights Reserved.</p>
-                </footer>
+                
             </div>
         </div>
     );
