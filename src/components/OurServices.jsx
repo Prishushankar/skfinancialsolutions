@@ -1,9 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
+import { motion } from "framer-motion";
 
 const OurServices = () => {
-  const [activeSection, setActiveSection] = useState(0);
-  const sectionRefs = useRef([]);  const services = [
-    {      id: "mutual-funds",      title: "Mutual Fund Solutions",
+  const sectionRefs = useRef([]);
+
+  const services = [
+    {
+      id: "mutual-funds",
+      title: "Mutual Fund Solutions",
       description:
         "Expert-curated mutual fund portfolios designed to match your financial goals, risk tolerance, and investment horizon.",
       features: [
@@ -11,8 +15,9 @@ const OurServices = () => {
         "Tax-Saving ELSS Funds",
         "Child Future Fund Selection",
         "Goal-Based Investment Planning",
-      ],      image:
-        "/green.jpg",
+      ],
+      image: "/green.jpg",
+      gradient: "from-green-500 to-emerald-600",
       icon: (
         <svg
           className="w-8 h-8 text-white"
@@ -40,8 +45,8 @@ const OurServices = () => {
         "Sukanya Samriddhi Yojana",
         "Higher Education & Global Study Funding",
       ],
-      image:
-        "/gradute.jpg",
+      image: "/gradute.jpg",
+      gradient: "from-blue-500 to-indigo-600",
       icon: (
         <svg
           className="w-8 h-8 text-white"
@@ -53,52 +58,36 @@ const OurServices = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.5}
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            d="M12 14l9-5-9-5-9 5 9 5z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
           />
         </svg>
       ),
     },
     {
-      id: "life-insurance",      title: "Insurance Solutions",
+      id: "life-insurance",
+      title: "Life & Health Insurance",
       description:
-        "Comprehensive life insurance plans that provide financial security for your family with customized coverage options to protect what matters most.",
+        "Comprehensive insurance solutions to protect you and your family against unforeseen circumstances and medical emergencies.",
       features: [
         "Term Life Insurance",
-        "Whole Life Insurance",
-        "ULIPs & Endowment Plans",
-        "Child Future Protection Plans",
-      ],
-      image:
-        "/Insurance.jpg",
-      icon: (
-        <svg
-          className="w-8 h-8 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "health-insurance",
-      title: "Health Insurance Coverage",
-      description:
-        "Tailored health insurance policies that offer comprehensive medical coverage for individuals and families, ensuring peace of mind during health emergencies.",
-      features: [
+        "Health Insurance Plans",
+        "Critical Illness Cover",
         "Family Floater Plans",
-        "Critical Illness Coverage",
-        "Senior Citizen Health Plans",
-        "Group Health Insurance",
       ],
-      image:
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image: "/Insurance.jpg",
+      gradient: "from-purple-500 to-pink-600",
       icon: (
         <svg
           className="w-8 h-8 text-white"
@@ -126,8 +115,8 @@ const OurServices = () => {
         "Land Purchase Financing",
         "Balance Transfer & Top-up",
       ],
-      image:
-        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      image: "/kotak.jpg",
+      gradient: "from-orange-500 to-red-600",
       icon: (
         <svg
           className="w-8 h-8 text-white"
@@ -148,44 +137,15 @@ const OurServices = () => {
       id: "personal-loans",
       title: "Personal & Business Loans",
       description:
-        "Quick and hassle-free personal and business loan solutions with minimal documentation to address your immediate financial requirements.",
+        "Quick and hassle-free personal loans for your immediate needs and business loans to fuel your entrepreneurial aspirations.",
       features: [
-        "Personal Loans",
-        "Business & MSME Loans",
-        "Education Financing",
-        "Professional Loans",
+        "Instant Personal Loans",
+        "Business Term Loans",
+        "Working Capital Finance",
+        "Equipment & Machinery Loans",
       ],
-      image:
-        "https://images.unsplash.com/photo-1579621970795-87facc2f976d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-      icon: (
-        <svg
-          className="w-8 h-8 text-white"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "retirement-planning",
-      title: "Retirement Planning",
-      description:
-        "Comprehensive retirement solutions that secure your future with strategic savings and investment plans designed for long-term financial independence.",
-      features: [
-        "NPS & Pension Plans",
-        "Senior Citizen Savings Schemes",
-        "Post-Retirement Income Planning",
-        "Estate & Legacy Planning",
-      ],
-      image:
-        "/old.jpg",
+      image: "/male.jpg",
+      gradient: "from-teal-500 to-cyan-600",
       icon: (
         <svg
           className="w-8 h-8 text-white"
@@ -204,134 +164,144 @@ const OurServices = () => {
     },
   ];
 
-  // Scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
 
-      sectionRefs.current.forEach((ref, index) => {
-        if (ref) {
-          const { offsetTop, offsetHeight } = ref;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(index);
-          }
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial call
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <section className="bg-black text-white py-20 px-4 sm:px-6 lg:px-20 mt-16">
-      <div className=" mx-auto">
-        {/* Header */}        <div className="mb-10">
-          <p className="text-primary text-md font-medium uppercase tracking-wider mb-4 font-poppins">
+    <section className="relative bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white py-20 px-4 sm:px-6 lg:px-20 overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+      </div>
+      
+      <div className="relative mx-auto max-w-7xl">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.p 
+            className="text-blue-400 text-sm font-semibold uppercase tracking-wider mb-4 font-poppins"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
             OUR FINANCIAL SERVICES
-          </p>
-          <h2 className="text-3xl sm:text-5xl font-bold mb-6 font-poppins">
-            Comprehensive Financial Solutions.
-            <span className="block">For Every Stage of Life.</span>
-          </h2>
-        </div>
+          </motion.p>
+          <motion.h2 
+            className="text-4xl sm:text-6xl font-bold mb-6 font-poppins bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            Comprehensive Financial Solutions
+            <span className="block text-3xl sm:text-5xl mt-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              For Every Stage of Life
+            </span>
+          </motion.h2>
+          <motion.p 
+            className="text-gray-300 text-lg max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
+            
+          </motion.p>
+        </motion.div>
 
         {/* Services Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Content - Scrollable Sections */}
-          <div className="space-y-20 mb-40">
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                ref={(el) => (sectionRefs.current[index] = el)}
-                className="py-12 flex flex-col justify-center"
-              >
+        <motion.div 
+          className="max-w-4xl mx-auto space-y-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {services.map((service, index) => (
+            <motion.div
+              key={service.id}
+              ref={(el) => (sectionRefs.current[index] = el)}
+              variants={itemVariants}
+              className="relative group transition-all duration-500 hover:opacity-100"
+            >
+              {/* Service Card */}
+              <div className="relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-blue-500/10">
+                {/* Gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-all duration-500`}></div>
+                
                 {/* Icon */}
-                <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-8">
+                <div className={`relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${service.gradient} rounded-2xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {service.icon}
                 </div>
 
-                {/* Title */}
-                <h3 className="text-3xl sm:text-4xl font-bold mb-6 font-poppins">
-                  {service.title}
-                </h3>
+                {/* Content */}
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-bold mb-4 font-poppins group-hover:text-blue-400 transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  <p className="text-gray-300 leading-relaxed mb-6 text-base">
+                    {service.description}
+                  </p>
 
-                {/* Description */}
-                <p className="text-gray-300 text-lg mb-8 leading-relaxed font-poppins">
-                  {service.description}
-                </p>                {/* Features List */}
-                <div className="space-y-4 mt-2">
-                  <h4 className="text-primary text-lg font-semibold mb-3 font-poppins">Key Offerings:</h4>
-                  {service.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center">
-                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                        <svg
-                          className="w-3 h-3 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <span className="text-white font-medium font-poppins">
-                        {feature}
-                      </span>
-                    </div>
-                  ))}
+                  {/* Features */}
+                  <ul className="space-y-3 mb-6">
+                    {service.features.map((feature, featureIndex) => (
+                      <motion.li
+                        key={featureIndex}
+                        className="flex items-center text-gray-300"
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 * featureIndex, duration: 0.4 }}
+                      >
+                        <div className={`w-2 h-2 bg-gradient-to-r ${service.gradient} rounded-full mr-3 flex-shrink-0`}></div>
+                        <span className="text-sm">{feature}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+
+                  {/* CTA Button */}
+                  <motion.button 
+                    className={`inline-flex items-center px-6 py-3 bg-gradient-to-r ${service.gradient} text-white font-semibold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-sm`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Learn More
+                    <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </motion.button>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Right Image - Sticky */}
-          <div className="relative">
-            <div className="sticky top-28 h-[60vh]">
-              <div className="bg-gray-800 rounded-2xl overflow-hidden shadow-2xl h-full w-10/12 relative ml-28">
-                {services.map((service, index) => (
-                  <img
-                    key={service.id}
-                    src={service.image}
-                    alt={service.title}
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                      index === activeSection ? "opacity-100" : "opacity-0"
-                    }`}
-                  />
-                ))}                {/* Overlay with service indicator */}
-                <div className="absolute bottom-4 left-4 right-4">
-                  <div className="bg-black/70 backdrop-blur-sm rounded-lg p-4">
-                    <h4 className="text-white font-bold text-lg font-poppins">
-                      {services[activeSection]?.title}
-                    </h4>
-                    <p className="text-gray-300 text-sm mt-1 mb-2 font-poppins">
-                      Talk to our advisors about your {services[activeSection]?.id.replace(/-/g, ' ')} needs
-                    </p>
-                    <div className="flex space-x-2 mt-2">
-                      {services.map((_, index) => (
-                        <div
-                          key={index}
-                          className={`h-1 rounded-full transition-all duration-300 ${
-                            index === activeSection
-                              ? "bg-primary w-8"
-                              : "bg-gray-400 w-2"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

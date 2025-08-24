@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { trackCalculatorUsage } from '../utils/analytics';
 
 const SIPCalculator = ({ onClose }) => {
   // State for form inputs
@@ -14,6 +15,9 @@ const SIPCalculator = ({ onClose }) => {
   
   // Calculate returns when inputs change
   useEffect(() => {
+    // Track calculator usage on first load
+    trackCalculatorUsage('SIP Calculator');
+    
     // Calculate SIP returns using formula: FV = P × ((1 + r)^n - 1) / r × (1 + r)
     const monthlyRate = returnRate / 12 / 100;
     const months = timePeriod * 12;

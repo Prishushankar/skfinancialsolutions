@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import NewsRoutePage from "./pages/NewsRoutePage";
 import Hero from "./components/Hero";
@@ -18,6 +19,24 @@ import Contact from "./components/Contact";
 import ScrollToTop from "./components/ScrollToTop";
 import FinancialNews from "./components/financialNews";
 import Videos from "./components/videos"; // Importing the Videos component
+import Signup from './components/Signup';
+import { AuthProvider } from './context/AuthContext';
+import Login from './components/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import WhatsAppFloat from './components/WhatsAppFloat';
+import { pageview } from './utils/analytics';
+
+
+// Component to track page views
+const PageViewTracker = () => {
+  const location = useLocation();
+  
+  useEffect(() => {
+    pageview(location.pathname + location.search);
+  }, [location]);
+  
+  return null;
+};
 
 const HomePage = () => {
   return (
@@ -38,21 +57,29 @@ const App = () => {
   return (
     <Router>
       <ScrollToTop />
-      <div className="overflow-x-hidden max-w-full">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/mutual-funds" element={<MutualFundPage />} />
-          <Route path="/insurance" element={<InsurancePage />} />
-          <Route path="/loans" element={<LoanPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/news" element={<NewsRoutePage />} />
-          <Route path="/financial-news" element={<FinancialNews />} />
-          <Route path="/videos" element={<Videos />} />
-        </Routes>
-        <Footer />
-      </div>
+      <AuthProvider>
+        <div className="overflow-x-hidden max-w-full">
+          <PageViewTracker />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route element={<ProtectedRoute />}> 
+              <Route path="/mutual-funds" element={<MutualFundPage />} />
+              <Route path="/insurance" element={<InsurancePage />} />
+              <Route path="/loans" element={<LoanPage />} />
+              <Route path="/news" element={<NewsRoutePage />} />
+              <Route path="/financial-news" element={<FinancialNews />} />
+            </Route>
+          </Routes>
+          <Footer />
+          <WhatsAppFloat />
+        </div>
+      </AuthProvider>
     </Router>
   );
 };
