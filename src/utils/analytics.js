@@ -77,3 +77,19 @@ export const trackWhatsAppClick = (source) => {
     label: `WhatsApp - ${source}`,
   });
 };
+
+export const trackPWAInstall = (outcome) => {
+  event({
+    action: 'pwa_install',
+    category: 'App',
+    label: outcome, // 'accepted' or 'dismissed'
+  });
+};
+
+export const trackPWAInstallPromptShow = () => {
+  event({
+    action: 'pwa_install_prompt_show',
+    category: 'App',
+    label: 'Install Prompt Displayed',
+  });
+};

@@ -25,6 +25,7 @@ import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import { pageview } from './utils/analytics';
+import { optimizeScrollPerformance } from './hooks/useSmoothScroll';
 
 
 // Component to track page views
@@ -54,11 +55,16 @@ const HomePage = () => {
 };
 
 const App = () => {
+  // Initialize scroll performance optimizations
+  useEffect(() => {
+    optimizeScrollPerformance();
+  }, []);
+
   return (
     <Router>
       <ScrollToTop />
       <AuthProvider>
-        <div className="overflow-x-hidden max-w-full">
+        <div className="overflow-x-hidden max-w-full gpu-accelerated">
           <PageViewTracker />
           <Navbar />
           <Routes>

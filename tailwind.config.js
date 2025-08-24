@@ -24,6 +24,14 @@ export default {
       animation: {
         marquee: 'marquee 25s linear infinite',
       },
+      transitionDuration: {
+        '400': '400ms',
+        '600': '600ms',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce-smooth': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+      },
       colors: {
         primary: {
           DEFAULT: "#2e38f2", // Blueish

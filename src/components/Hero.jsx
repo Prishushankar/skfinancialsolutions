@@ -12,9 +12,9 @@ const Hero = () => {
 
   return (
     // The parent container needs to be relative for the absolute child to be positioned correctly
-    <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen w-full pt-24 sm:pt-28 md:pt-32" style={{ maxWidth: "100vw", scrollBehavior: "smooth" }}>
+    <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50 to-blue-100 min-h-screen w-full pt-24 sm:pt-28 md:pt-32 gpu-accelerated" style={{ maxWidth: "100vw" }}>
       {/* Grid SVG Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none select-none gpu-accelerated">
         <svg
           className="w-full h-full opacity-20"
           viewBox="0 0 100 100"

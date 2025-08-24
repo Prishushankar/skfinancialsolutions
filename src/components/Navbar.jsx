@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
+import InstallButton from './InstallButton';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,29 +14,37 @@ const Navbar = () => {
   const handleLogout = async () => { try { await logout(); } catch { /* ignore */ } };
   const isActive = (path) => location.pathname === path;
 
-  // Handle scroll events for hiding/showing navbar
+  // Handle scroll events for hiding/showing navbar with throttling
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-      
-      // Simple scroll logic: show when scrolling up or at top, hide when scrolling down
-      if (currentScrollPos < 10) {
-        // Always show at top of page
-        setVisible(true);
-      } else if (currentScrollPos > prevScrollPos) {
-        // Scrolling down - hide navbar (unless menu is open)
-        if (!isMenuOpen) {
-          setVisible(false);
-        }
-      } else {
-        // Scrolling up - show navbar
-        setVisible(true);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const currentScrollPos = window.scrollY;
+          
+          // Simple scroll logic: show when scrolling up or at top, hide when scrolling down
+          if (currentScrollPos < 10) {
+            // Always show at top of page
+            setVisible(true);
+          } else if (currentScrollPos > prevScrollPos) {
+            // Scrolling down - hide navbar (unless menu is open)
+            if (!isMenuOpen) {
+              setVisible(false);
+            }
+          } else {
+            // Scrolling up - show navbar
+            setVisible(true);
+          }
+          
+          setPrevScrollPos(currentScrollPos);
+          ticking = false;
+        });
+        ticking = true;
       }
-      
-      setPrevScrollPos(currentScrollPos);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [prevScrollPos, isMenuOpen]);
 
@@ -99,6 +108,7 @@ const Navbar = () => {
           
           {/* Right Section */}
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+            <InstallButton />
             {!user && (
               <>
                 <Link to="/login" className={`text-xs lg:text-sm font-medium transition-colors ${isActive('/login') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>Login</Link>
@@ -153,6 +163,7 @@ const Navbar = () => {
               ))}
             </nav>
             <div className="pt-3 flex flex-col gap-3 border-t border-gray-100 mt-2">
+              <InstallButton isMobile={true} />
               {!user && (
                 <div className="flex gap-3">
                   <Link to="/login" onClick={() => setIsMenuOpen(false)} className={`flex-1 text-center px-4 py-2 rounded-md font-medium text-sm border ${isActive('/login') ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600'}`}>Login</Link>
