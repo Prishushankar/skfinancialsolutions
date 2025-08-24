@@ -86,10 +86,10 @@ const Navbar = () => {
             <Link to="/" className="flex items-center gap-2 group">
               <img
                 src="/crop1.jpg"
-                alt="SkFinancial"
+                alt="SkFinancialSolution"
                 className="h-12 w-12 md:h-14 md:w-14 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform"
               />
-              <span className="hidden md:block font-semibold text-gray-800 tracking-tight text-sm">SK Financial</span>
+              <span className="hidden md:block font-semibold text-gray-800 tracking-tight text-sm">SK Financial Solutions</span>
             </Link>
           </div>
           

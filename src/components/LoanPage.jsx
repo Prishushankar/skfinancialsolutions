@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import ServiceCard from "./ServiceCard";
+import WhatsAppFloat from "./WhatsAppFloat";
 
 const LoanPage = () => {
   // Animation variants
@@ -573,6 +574,7 @@ const LoanPage = () => {
           </motion.div>
         </div>
       </section>
+      <WhatsAppFloat />
     </div>
   );
 };

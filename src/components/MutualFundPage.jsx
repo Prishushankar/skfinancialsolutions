@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import SIPCalculator from "./SIPCalculator";
 import MutualFundCalculator from "./MutualFundCalculator";
+import WhatsAppFloat from "./WhatsAppFloat";
 
 const MutualFundPage = () => {
   const [showSIPCalculator, setShowSIPCalculator] = useState(false);
@@ -748,6 +749,7 @@ const MutualFundPage = () => {
           </motion.div>
         </motion.div>
       </section>
+      <WhatsAppFloat />
     </div>
   );
 };

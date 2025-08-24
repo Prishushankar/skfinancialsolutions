@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import WhatsAppFloat from './WhatsAppFloat';
 
 // --- CONFIGURATION ---
 const API_URL = 'https://finnewsscraper-1.onrender.com/api/indian-news';
@@ -186,6 +187,7 @@ export default function App() {
                 
                 
             </div>
+            <WhatsAppFloat />
         </div>
     );
 }

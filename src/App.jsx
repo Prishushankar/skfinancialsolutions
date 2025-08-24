@@ -23,9 +23,9 @@ import Signup from './components/Signup';
 import { AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import WhatsAppFloat from './components/WhatsAppFloat';
 import { pageview } from './utils/analytics';
 import { optimizeScrollPerformance } from './hooks/useSmoothScroll';
+import WhatsAppFloat from './components/WhatsAppFloat';
 
 
 // Component to track page views
@@ -50,6 +50,7 @@ const HomePage = () => {
       <Industries />
       <WhyChoose />
       <CaseStudies />
+      <WhatsAppFloat />
     </>
   );
 };
@@ -64,7 +65,7 @@ const App = () => {
     <Router>
       <ScrollToTop />
       <AuthProvider>
-        <div className="overflow-x-hidden max-w-full gpu-accelerated">
+        <div className="overflow-x-hidden max-w-full">
           <PageViewTracker />
           <Navbar />
           <Routes>
@@ -74,7 +75,7 @@ const App = () => {
             <Route path="/videos" element={<Videos />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route element={<ProtectedRoute />}> 
+            <Route element={<ProtectedRoute />}>
               <Route path="/mutual-funds" element={<MutualFundPage />} />
               <Route path="/insurance" element={<InsurancePage />} />
               <Route path="/loans" element={<LoanPage />} />
@@ -83,7 +84,6 @@ const App = () => {
             </Route>
           </Routes>
           <Footer />
-          <WhatsAppFloat />
         </div>
       </AuthProvider>
     </Router>

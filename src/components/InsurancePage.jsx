@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import ServiceCard from "./ServiceCard";
 import SIPCalculator from "./SIPCalculator";
+import WhatsAppFloat from "./WhatsAppFloat";
 
 const InsurancePage = () => {
   const [showSIPCalculator, setShowSIPCalculator] = useState(false);
@@ -809,6 +810,7 @@ const InsurancePage = () => {
           </motion.div>
         </div>
       </section>
+      <WhatsAppFloat />
     </div>
   );
 };

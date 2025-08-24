@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import WhatsAppFloat from './WhatsAppFloat';
 
 // NOTE: Make sure you have Tailwind CSS configured in your Vite + React project.
 // You should also link to Google Fonts (Inter) and Font Awesome in your main `index.html` file.
@@ -184,6 +185,7 @@ export default function Videos() {
 
         {/* Video Modal Rendered Here */}
         <VideoModal videoId={activeVideoId} onClose={() => setActiveVideoId(null)} />
+        <WhatsAppFloat />
       </div>
     </>
   );

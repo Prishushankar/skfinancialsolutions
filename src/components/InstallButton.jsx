@@ -7,6 +7,9 @@ const InstallButton = ({ className = "", isMobile = false }) => {
   const [showInstallButton, setShowInstallButton] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
 
+  // Debug log
+  console.log('InstallButton component rendering, showInstallButton:', showInstallButton);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
       // Prevent the mini-infobar from appearing on mobile
@@ -32,6 +35,9 @@ const InstallButton = ({ className = "", isMobile = false }) => {
     if (isStandalone || isInWebAppiOS) {
       setShowInstallButton(false);
     } else {
+      // Show install button for testing - remove this later
+      setShowInstallButton(true);
+      
       window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.addEventListener('appinstalled', handleAppInstalled);
     }
@@ -43,7 +49,11 @@ const InstallButton = ({ className = "", isMobile = false }) => {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      // If no deferred prompt, show browser-specific instructions
+      alert('To install this app:\n\nChrome/Edge: Click the three dots menu > "Install SK Financial"\nSafari: Click Share > "Add to Home Screen"');
+      return;
+    }
 
     setIsInstalling(true);
     

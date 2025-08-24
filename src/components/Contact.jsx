@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useAnimation } from "framer-motion";
 import EmailForm from './EmailForm';
+import WhatsAppFloat from './WhatsAppFloat';
 import { trackContactForm, trackWhatsAppClick } from '../utils/analytics';
 
 // Enhanced SVG Components
@@ -756,6 +757,7 @@ const Contact = () => {
           ></iframe>
         </motion.div>
       </div>
+      <WhatsAppFloat />
     </div>
   );
 };

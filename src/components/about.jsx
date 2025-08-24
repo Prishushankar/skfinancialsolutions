@@ -1,6 +1,7 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import WhatsAppFloat from "./WhatsAppFloat";
 
 const About = () => {
   // Team members data - centered in the UI
@@ -392,6 +393,7 @@ const About = () => {
           <path d="M4 19h16v2H4v-2zm5-4h11v2H9v-2zm-5-4h16v2H4v-2zm5-4h11v2H9V7zM4 3h16v2H4V3z" />
         </svg>
       </motion.div>
+      <WhatsAppFloat />
     </motion.section>
   );
 };
